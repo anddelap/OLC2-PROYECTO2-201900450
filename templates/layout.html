@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+    <head>
+        <title>RUST</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='estilo.css')}}">
+    </head>
+    <body>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">RUST</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+            <ul class="navbar-nav nav-pills">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/">Editor</a>
+              </li>
+              <!-- <div class="dropdown-container">
+                <span>
+                   <a class="nav-link active" href="/compilar">Editor</a>
+                </span>
+                <ul>
+                  <li><a class="nav-link active" href="/compilar">Compilar</a></li>
+                  <li><a class="nav-link" href="/optimizacion/mirilla">Optimizar por mirilla</a></li>
+                  <li><a class="nav-link" href="/optimizacion/bloques">Optimizar por bloques</a></li>
+                </ul>
+
+              </div> -->
+
+              <!-- <li class="nav-item">
+                <a class="nav-link" href="/analisis">Editor</a>
+              </li> -->
+              <form action="#" method="post">
+                <input type="submit" value="Ejecutar" class="nav-link">
+              </form>
+              <div class="dropdown-container">
+                <span>
+                   <a class="nav-link" href="#">Reportes</a>
+                </span>
+                <ul>
+                  <li><a class="nav-link " href="/reportes/tabla-simbolos">Reporte de tabla de simbolos</a></li>
+                  <li><a class="nav-link" href="/reportes/errores">Reporte de errores</a></li>
+                  <li><a class="nav-link " href="/reportes/bd-existente">Reporte de base de datos existente</a></li>
+                  <li><a class="nav-link" href="/reportes/base-datos">Reporte de base de datos</a></li>
+                </ul>
+
+              </div>
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/about-me">About me</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+        </br>
+        {% block content %}
+        {% endblock %}
+        <!-- <article class="Articulo">
+          <h1>Compilar</h1>
+          <table class= "titulos">
+            <tr>
+              <td>
+                <h2>Entrada</h2>
+              </td>
+              <td>
+                <h2>Salida</h2>
+              </td>
+            </tr>
+          </table>
+          <form action="#" method="post">
+            <textarea class="texto" name="entrada">{{g.codigo}}</textarea>
+            <textarea class="texto" disabled name="salida">{{g.salida}}</textarea>
+            <p><input type="submit" value="Compilar" class="btn btn-primary"></p>
+          </form>
+          </br>
+          </br>
+          </br>
+        </article> -->
+    </body>
+</html>

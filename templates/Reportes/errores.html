@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<article class="Articulo">
+    <h1>Reportes de Errores</h1>
+    </br>
+    <table class="botones">
+        <tr>
+            <table class="Reporte">
+                <tr>
+                    <th class="title">
+                        No.
+                    </th>
+                    <th class="title">
+                        Descripcion
+                    </th>
+                    <th class="title">
+                        Ámbito
+                    </th>
+                    <th class="title">
+                        Linea
+                    </th>
+                    <th class="title">
+                        Columna
+                    </th>
+                    <th class="title">
+                        Fecha y Hora
+                    </th>
+                    <!-- <th class="title">
+                        Errores
+                    </th> -->
+                </tr>
+                {%for error in errs%}
+                <tr>
+                    {%for e in error%}
+                    <td>{{e}}</td>
+                    {%endfor%}
+                </tr>
+                {%endfor%}
+            </table>
+        </tr>
+        <tr>
+            </br>
+        </tr>
+        <tr>
+            <td><a class="btn btn-primary" href="/reportes">AST</a></td>
+        </tr>
+    </table>
+</article>
+{% endblock %}

@@ -1,0 +1,26 @@
+----------------------
+----ARCHIVO BASICO----
+----------------------
+El valor de val11 es:              214
+El valor de val21 es:              412
+El valor de val31 es:              1439
+El resultado de la operación es:  1439
+El valor de bo1 es:                False
+El valor de cad1 es:               imprimir
+El valor de cad21 es:               cadena valida
+El valor de letra1 es:             c
+El valor de bol21:            True
+
+
+
+>>>>>> Esto debería de imprimirse
+>>>>>> Esto debería de imprimirse
+>>>>>> En este lugar deberia de entrar :)
+>>>>> numeroPar ingreso a if falso, 15 no es par
+
+*************PRUEBA DE NATIVAS
+ valor de b: 100
+ valor absoluto1: 4
+ valor absoluto2: 10.0
+ valor raiz1: 3.0
+ valor raiz2: 10.0

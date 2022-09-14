@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<article class="Articulo">
+  <h1>Reportes de Base de datos existente</h1>
+  </br>
+  <!-- <table class="botones">
+      <tr>
+        <table class="Reporte">
+          <tr>
+            <th class="title">
+              ID
+            </th>
+            <th class="title">
+              Valor
+            </th>
+            <th class="title">
+              Tipo
+            </th>
+            <th class="title">
+              Fila
+            </th>
+            <th class="title">
+              Columna
+            </th>
+          </tr>
+            {%for sim in simbolos%}
+            <tr>
+                {%for s in sim%}
+                <td>{{s}}</td>
+                {%endfor%}
+            </tr>
+          {%endfor%}
+        </table>
+      </tr>
+      <tr>
+        </br>
+      </tr>
+      <tr>
+        <td><img src="{{url_for('static', filename='Errores/Tabla.jpg')}}" class="virus"/></td>
+      </tr>
+      <tr>
+        </br>
+      </tr>
+      <tr>
+        <td><a class="btn btn-primary" href="/reportes">AST</a></td>
+      </tr>
+  </table> -->
+</article>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<article class="Articulo">
+  <h1>Compilar</h1>
+  <table class="titulos">
+    <tr>
+      <td>
+        <h2>Entrada</h2>
+      </td>
+      <td>
+        <h2>Salida</h2>
+      </td>
+    </tr>
+  </table>
+  <form action="#" method="post">
+    <!-- <textarea class="texto" name="entrada" id="Entrada">{{g.codigo}}</textarea> -->
+    <table  class="titulos">
+      <tr>
+        <td>
+          <div class="editor">
+            <textarea id='lineCounter' wrap='off' disabled>1.</textarea>
+            <textarea id='codeEditor' wrap='off' name="entrada">{{g.codigo}}</textarea>
+            <!-- <textarea name="entrada" wrap='off' id='codeEditor'>{{g.codigo}}</textarea> -->
+          </div>
+        </td>
+        <td>
+          <textarea id='lineCounter' wrap='off' disabled>1.</textarea>
+          <textarea id='codeEditor' wrap='off' disabled name="salida">{{g.salida}}</textarea>
+          <!-- <textarea class="texto" disabled name="salida">{{g.salida}}</textarea> -->
+        </td>
+      </tr>
+    </table>
+    <p><input type="submit" value="Compilar" class="btn btn-primary"></p>
+  </form>
+  </br>
+  </br>
+  </br>
+</article>
+<script>
+  /* document.getElementById('Entrada').addEventListener('keydown', (event) =>{
+    print(event.key);
+    if (event.key == 'Tab') { 
+      event.preventDefault();
+      var start = this.selectionStart;
+      var end = this.selectionEnd;
+
+      // set textarea value to: text before caret + tab + text after caret
+      this.value = this.value.substring(0, start) +
+        "\t" + this.value.substring(end);
+
+      // put caret at right position again
+      this.selectionStart =
+        this.selectionEnd = start + 1;
+    }
+  }); */
+  /* $('#Entrada').live('keydown', function(e) {
+    var keyCode = e.keyCode || e.which; 
+
+    if (keyCode == 9) { 
+      e.preventDefault(); 
+      alert('tab pressed');
+    } 
+  }); */
+  var codeEditor = document.getElementById('codeEditor');
+  var lineCounter = document.getElementById('lineCounter');
+  codeEditor.addEventListener('scroll', () => {
+    lineCounter.scrollTop = codeEditor.scrollTop;
+    lineCounter.scrollLeft = codeEditor.scrollLeft;
+  });
+  codeEditor.addEventListener('keydown', (e) => {
+    let { keyCode } = e;
+    let { value, selectionStart, selectionEnd } = codeEditor;
+    if (keyCode === 9) {  // TAB = 9
+      e.preventDefault();
+      codeEditor.value = value.slice(0, selectionStart) + '\t' + value.slice(selectionEnd);
+      codeEditor.setSelectionRange(selectionStart + 2, selectionStart + 2)
+    }
+  });
+  var lineCountCache = 0;
+  function line_counter() {
+    var lineCount = codeEditor.value.split('\n').length;
+    var outarr = new Array();
+    if (lineCountCache != lineCount) {
+      for (var x = 0; x < lineCount; x++) {
+        outarr[x] = (x + 1) + '.';
+      }
+      lineCounter.value = outarr.join('\n');
+    }
+    lineCountCache = lineCount;
+  }
+  codeEditor.addEventListener('input', () => {
+    line_counter();
+  });
+</script>
+{% endblock %}

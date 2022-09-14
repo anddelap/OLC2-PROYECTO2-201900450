@@ -1,0 +1,10 @@
+digraph G{
+rankdir=UD
+node[shape=box]
+concentrate=true
+nod0[shape=record label="{Error|Error Lexico: Caractér ilegal en 1. Caracter: '$'
+|Error Lexico: Caractér ilegal en 2. Caracter: '&'
+|Error Lexico: Caractér ilegal en 3. Caracter: '&'
+|Error Lexico: Caractér ilegal en 4. Caracter: '&'
+|Error Lexico: Caractér ilegal en 5. Caracter: '&'
+}"]}
