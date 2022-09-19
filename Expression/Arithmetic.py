@@ -38,6 +38,24 @@ class Arithmetic(Expression):
                         typeExpression.STRING,0,0
                     )
                 elif(dominant == typeExpression.INTEGER):
+                    #print( str(leftValue.getValue()) + "+" + str(rightValue.getValue()))
+                    value = int(leftValue.getValue()) + int(rightValue.getValue())
+                    change = False
+                    aux = [str(leftValue.getValue()) , "+" , str(rightValue.getValue()), str(value)]
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if int(leftValue.getValue()) == int(temp[4]):
+                                aux[0] = temp[0]
+                                change = True
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if int(rightValue.getValue()) == int(temp[4]):
+                                aux[2] = temp[0]
+                                change = True
+                    if change:
+                        Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                    else:
+                        Environment.saveTemporal(str(leftValue.getValue()) , "+" , str(rightValue.getValue()), str(value))
                     return Symbol(
                         "",
                         int(leftValue.getValue()) + int(rightValue.getValue()),
@@ -89,6 +107,24 @@ class Arithmetic(Expression):
                     #archivo.close()
                     Environment.saveError("No es posible restar "+ str(leftValue.getValue()) + " y "+ str(rightValue.getValue()), 'Local', self.fila, self.columna)
                 elif(dominant == typeExpression.INTEGER):
+                    #print( str(leftValue.getValue()) + "-" + str(rightValue.getValue()))
+                    value = int(leftValue.getValue()) - int(rightValue.getValue())
+                    change = False
+                    aux = [str(leftValue.getValue()) , "-" , str(rightValue.getValue()), str(value)]
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if int(leftValue.getValue()) == int(temp[4]):
+                                aux[0] = temp[0]
+                                change = True
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if int(rightValue.getValue()) == int(temp[4]):
+                                aux[2] = temp[0]
+                                change = True
+                    if change:
+                        Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                    else:
+                        Environment.saveTemporal(str(leftValue.getValue()) , "-" , str(rightValue.getValue()), str(value))
                     return Symbol(
                         "",
                         int(leftValue.getValue()) - int(rightValue.getValue()),
@@ -140,6 +176,24 @@ class Arithmetic(Expression):
                     #archivo.close()
                     Environment.saveError("No es posible multiplicar "+ str(leftValue.getValue()) + " y "+ str(rightValue.getValue()), 'Local', self.fila, self.columna)
                 elif(dominant == typeExpression.INTEGER):
+                    print( str(leftValue.getValue()) + "*" + str(rightValue.getValue()))
+                    value = int(leftValue.getValue()) * int(rightValue.getValue())
+                    change = False
+                    aux = [str(leftValue.getValue()) , "*" , str(rightValue.getValue()), str(value)]
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if int(leftValue.getValue()) == int(temp[4]):
+                                aux[0] = temp[0]
+                                change = True
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if int(rightValue.getValue()) == int(temp[4]):
+                                aux[2] = temp[0]
+                                change = True
+                    if change:
+                        Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                    else:
+                        Environment.saveTemporal(str(leftValue.getValue()) , "*" , str(rightValue.getValue()), str(value))
                     return Symbol(
                         "",
                         int(leftValue.getValue()) * int(rightValue.getValue()),
@@ -192,6 +246,25 @@ class Arithmetic(Expression):
                         #archivo.close()
                         Environment.saveError("No es posible dividir "+ str(leftValue.getValue()) + " y "+ str(rightValue.getValue()), 'Local', self.fila, self.columna)
                     elif(dominant == typeExpression.INTEGER):
+                        #print( str(leftValue.getValue()) + "/" + str(rightValue.getValue()))
+                        value = math.trunc(int(leftValue.getValue()) / int(rightValue.getValue()))
+                        change = False
+                        aux = [str(leftValue.getValue()) , "/" , str(rightValue.getValue()), str(value)]
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if int(leftValue.getValue()) == math.trunc(float(temp[4])):
+                                    aux[0] = temp[0]
+                                    change = True
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if int(rightValue.getValue()) == math.trunc(float(temp[4])):
+                                    aux[2] = temp[0]
+                                    change = True
+                        if change:
+                            Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                        else:
+                            Environment.saveTemporal(str(leftValue.getValue()) , "/" , str(rightValue.getValue()), str(value))
+                        #Environment.saveTemporal(str(leftValue.getValue()) , "/" , str(rightValue.getValue()),str(int(leftValue.getValue()) / int(rightValue.getValue())))
                         return Symbol(
                             "",
                             math.trunc(int(leftValue.getValue()) / int(rightValue.getValue())),
@@ -252,6 +325,9 @@ class Arithmetic(Expression):
                     Environment.saveError("No es realizar la potencia con "+ str(leftValue.getValue()) + " y "+ str(rightValue.getValue()), 'Local', self.fila, self.columna)
                 elif(dominant == typeExpression.INTEGER):
                     if (self.PotType == "i64"):
+                        # Revisar como es se hace potencia en C3D
+                        #print( str(leftValue.getValue()) + "^" + str(rightValue.getValue()),str(int(leftValue.getValue()) ** int(rightValue.getValue())))
+                        #Environment.saveTemporal(str(leftValue.getValue()) , "^" , str(rightValue.getValue()),str(int(leftValue.getValue()) ** int(rightValue.getValue())))
                         return Symbol(
                             "",
                             int(leftValue.getValue()) ** int(rightValue.getValue()),
@@ -314,6 +390,24 @@ class Arithmetic(Expression):
                     #archivo.close()
                     Environment.saveError("No es realizar la operacion modulo con "+ str(leftValue.getValue()) + " y "+ str(rightValue.getValue()), 'Local', self.fila, self.columna)
                 elif(dominant == typeExpression.INTEGER):
+                    #print( str(leftValue.getValue()) + "%" + str(rightValue.getValue()))
+                    value = int(leftValue.getValue()) % int(rightValue.getValue())
+                    change = False
+                    aux = [str(leftValue.getValue()) , "%" , str(rightValue.getValue()), str(value)]
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if int(leftValue.getValue()) == int(temp[4]):
+                                aux[0] = temp[0]
+                                change = True
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if int(rightValue.getValue()) == int(temp[4]):
+                                aux[2] = temp[0]
+                                change = True
+                    if change:
+                        Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                    else:
+                        Environment.saveTemporal(str(leftValue.getValue()) , "%" , str(rightValue.getValue()), str(value))
                     return Symbol(
                         "",
                         int(leftValue.getValue()) % int(rightValue.getValue()),
@@ -358,6 +452,7 @@ class Arithmetic(Expression):
         else:
             if (self.operation == arithmeticOperation.NEGATIVE):
                 if(leftValue.getType()== typeExpression.INTEGER):
+                    print("-" + str(leftValue.getValue()))
                     return Symbol(
                         "",
                         int(leftValue.getValue()) * int(-1),

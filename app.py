@@ -13,34 +13,55 @@ def index():
 @app.route('/compilar', methods=['GET', 'POST'])
 def compilar():
     if request.method == 'POST':
-        env.simbolos=[]
-        env.errores=[]
-        codigo = request.form["entrada"]
-        g.codigo=codigo
-        archivo = open("Salida.txt", "w")
-        archivo.write("")
-        archivo.close()
-        archivo = open("Errores/Errores.txt", "w")
-        archivo.write("")
-        archivo.close()
-        #Entra al analisis
-        gramatica.parser.parse(codigo)
-        #Obtiene las Salidas hacia la Salida General
-        archivo = open("Salida.txt",'r')
-        Salida = archivo.read()
-        g.salida = Salida
-        #archivo.close()
-        #archivo = open("Errores/Errores.txt", "r")
-        #errores = archivo.readlines()
-        #env.errores = errs
-        #print(env.errs)
-        global errs
-        errs = env.errores
-        global simbolos
-        simbolos = env.simbolos
-        #global errs
-        #errs = tuple(errores)
-        return render_template("compilar.html")
+        if 'compilar' in request.form:
+            env.simbolos=[]
+            env.errores=[]
+            env.contador=0
+            env.temporales=[]
+            codigo = request.form["entrada"]
+            g.codigo=codigo
+            archivo = open("Salida.txt", "w")
+            archivo.write("#include <stdio.h> \nfloat stack[100000]; \nfloat heap[100000]; \nfloat P; \nfloat H;\n")
+            archivo.close()
+            archivo = open("Errores/Errores.txt", "w")
+            archivo.write("")
+            archivo.close()
+            #Entra al analisis
+            gramatica.parser.parse(codigo)
+            #Obtiene las Salidas hacia la Salida General
+            declaracionTemporales = ""
+            for temp in env.temporales:
+                declaracionTemporales += temp[0]+","
+            declaracionTemporales = "float "+declaracionTemporales
+            #declaracionTemporales[len(declaracionTemporales)-1] = ";"
+            declaracionTemporales = declaracionTemporales[:len(declaracionTemporales)-1] + ";" + declaracionTemporales[len(declaracionTemporales):]
+            print(declaracionTemporales)
+            archivo = open("Salida.txt",'r')
+            Salida = archivo.read()
+            g.salida = Salida
+            #archivo.close()
+            #archivo = open("Errores/Errores.txt", "r")
+            #errores = archivo.readlines()
+            #env.errores = errs
+            #print(env.errs)
+            print(env.temporales)
+            global errs
+            errs = env.errores
+            global simbolos
+            simbolos = env.simbolos
+            #global errs
+            #errs = tuple(errores)
+            return render_template("compilar.html")
+        elif 'mirilla' in request.form:
+            codigo = request.form["entrada"]
+            g.codigo=codigo
+            print('mirilla')
+            return render_template("compilar.html")
+        elif 'bloque' in request.form:
+            codigo = request.form["entrada"]
+            g.codigo=codigo
+            print('bloque')
+            return render_template("compilar.html")
     else:
         return render_template("compilar.html")
 
@@ -67,6 +88,12 @@ def BaseDatos():
     #simbolos = tuple(env.simbolos)
     #global errs
     return render_template("Reportes/base-datos.html")
+
+@app.route('/reportes/optimizacion')
+def RporteOpti():
+    #simbolos = tuple(env.simbolos)
+    #global errs
+    return render_template("Reportes/optimizacion.html")
     
 @app.route('/about-me')
 def AboutMe():

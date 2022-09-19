@@ -5,6 +5,8 @@ import datetime
 
 errores = []
 simbolos = []
+temporales = []
+contador = 0
 class Environment:
     def __init__(self,father):
         #Usamos un dicionario para nuestra tabla de simbolos, guardara el id como clave y como cuerpo el simbolo
@@ -18,7 +20,18 @@ class Environment:
     def saveError(description, ambito, fila, columna):
         global errores
         errores.append((str(len(errores)+1), description, ambito, str(fila), columna, str(datetime.datetime.now())))
-
+    # ========================== TEMPORALES ==========================
+    def saveTemporal(expresion1,operation,expresion2 ,resultado):
+        global temporales
+        global contador
+        temporales.append(["t"+str(contador),expresion1,operation,expresion2,resultado])
+        contador += 1
+    def saveDeclaration(id,expresion):
+        global temporales
+        temporales.append([id,expresion])
+    def getTemporales():
+        return temporales
+    # ================================================================
     def saveVariable(self, id:str, value, type: typeExpression, fila: int, columna: int, isArray: bool, mutable: bool, temporal: bool):
         if(self.variable.get(id) != None):
             archivo = open("Salida.txt", "a")
