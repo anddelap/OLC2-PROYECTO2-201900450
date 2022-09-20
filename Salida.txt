@@ -3,3 +3,27 @@ float stack[100000];
 float heap[100000]; 
 float P; 
 float H;
+float t0,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16;
+
+void main(){
+t0=2*10;
+t1=t0*6;
+t2=5+t1;
+t3=1*5;
+t4=t2+t3;
+t5=9*2;
+t6=t4+t5;
+t7=t3%1;
+t8=t6-t7;
+a=t8;
+t9=t3+9;
+t10=8*3;
+t11=t9+t10;
+t12=t3*9;
+t13=t11-t12;
+t14=10+4;
+t15=t14+t3;
+t16=t13+t15;
+b=t16;
+return 0;
+}

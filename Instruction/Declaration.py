@@ -42,17 +42,26 @@ class Declaration(Instruction):
                             Environment.saveError("Error: Los tipos no coinciden en la declaracion",'Local', self.fila, self.columna)
                             environment.saveVariable('None',Primitive(0,typeExpression.INTEGER).execute(environment),typeExpression.INTEGER, self.fila, self.columna,self.isArray,self.mutable,False)
                             return
-                    print("Entra")
+                    aux = [self.id,""]
+                    asignacion = False
                     for temp in Environment.getTemporales():
-                        if(str(tempValue) == temp[4]):
-                            Environment.saveDeclaration(self.id,temp[0])
+                        #print(len(temp))
+                        if(len(temp) == 5):
+                            if str(tempValue.getValue()) == temp[4]:
+                                aux[1] = str(temp[0])
+                                asignacion = True
+                            #Environment.saveDeclaration(self.id,temp[0])
+                    if(asignacion == True):
+                        Environment.saveDeclaration(aux[0],aux[1])
+                    else:
+                        Environment.saveDeclaration(self.id,str(tempValue.getValue()))
 
                     environment.saveVariable(self.id, tempValue, self.type, self.fila, self.columna, self.isArray,self.mutable, False)
                 else:
                     aux = [self.id,""]
                     asignacion = False
                     for temp in Environment.getTemporales():
-                        print(len(temp))
+                        #print(len(temp))
                         if(len(temp) == 5):
                             if str(tempValue.getValue()) == temp[4]:
                                 aux[1] = temp[0]
@@ -60,6 +69,9 @@ class Declaration(Instruction):
                             #Environment.saveDeclaration(self.id,temp[0])
                     if(asignacion == True):
                         Environment.saveDeclaration(aux[0],aux[1])
+                    else:
+                        Environment.saveDeclaration(self.id,str(tempValue.getValue()))
+                    
                     environment.saveVariable(self.id, tempValue, tempValue.getType(), self.fila, self.columna, self.isArray,self.mutable, False)
             else:
                 if(self.isVector == False):

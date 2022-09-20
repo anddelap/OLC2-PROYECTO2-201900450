@@ -176,7 +176,7 @@ class Arithmetic(Expression):
                     #archivo.close()
                     Environment.saveError("No es posible multiplicar "+ str(leftValue.getValue()) + " y "+ str(rightValue.getValue()), 'Local', self.fila, self.columna)
                 elif(dominant == typeExpression.INTEGER):
-                    print( str(leftValue.getValue()) + "*" + str(rightValue.getValue()))
+                    #print( str(leftValue.getValue()) + "*" + str(rightValue.getValue()))
                     value = int(leftValue.getValue()) * int(rightValue.getValue())
                     change = False
                     aux = [str(leftValue.getValue()) , "*" , str(rightValue.getValue()), str(value)]
@@ -452,7 +452,7 @@ class Arithmetic(Expression):
         else:
             if (self.operation == arithmeticOperation.NEGATIVE):
                 if(leftValue.getType()== typeExpression.INTEGER):
-                    print("-" + str(leftValue.getValue()))
+                    #print("-" + str(leftValue.getValue()))
                     return Symbol(
                         "",
                         int(leftValue.getValue()) * int(-1),

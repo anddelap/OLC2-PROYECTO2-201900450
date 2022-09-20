@@ -31,11 +31,29 @@ def compilar():
             #Obtiene las Salidas hacia la Salida General
             declaracionTemporales = ""
             for temp in env.temporales:
-                declaracionTemporales += temp[0]+","
+                if(temp[0][0]=="t"):
+                    declaracionTemporales += temp[0]+","
             declaracionTemporales = "float "+declaracionTemporales
             #declaracionTemporales[len(declaracionTemporales)-1] = ";"
             declaracionTemporales = declaracionTemporales[:len(declaracionTemporales)-1] + ";" + declaracionTemporales[len(declaracionTemporales):]
-            print(declaracionTemporales)
+            #print(declaracionTemporales)
+            with open('Salida.txt', 'r') as file:
+                # read a list of lines into data
+                data = file.readlines()
+            #print(data)
+            data.append(declaracionTemporales+"\n\n")
+            data.append("void main(){\n")
+            for temp in env.temporales:
+                if(len(temp)==5):
+                    data.append(temp[0]+"="+temp[1]+temp[2]+temp[3]+";\n")
+                elif(len(temp)==2):
+                    data.append(temp[0]+"="+temp[1]+";\n")
+            data.append("return 0;\n")
+            data.append("}")
+            # ======== AQUI SE ESCRIBE EN EL ARCHIVO DE SALIDA =========
+            with open('Salida.txt', 'w') as file:
+                file.writelines(data)
+            # ========================================================
             archivo = open("Salida.txt",'r')
             Salida = archivo.read()
             g.salida = Salida
@@ -44,7 +62,7 @@ def compilar():
             #errores = archivo.readlines()
             #env.errores = errs
             #print(env.errs)
-            print(env.temporales)
+            #print(env.temporales)
             global errs
             errs = env.errores
             global simbolos
