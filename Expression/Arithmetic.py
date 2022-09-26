@@ -62,6 +62,23 @@ class Arithmetic(Expression):
                         typeExpression.INTEGER,0,0
                     )
                 elif(dominant == typeExpression.FLOAT):
+                    value = float(leftValue.getValue()) + float(rightValue.getValue())
+                    change = False
+                    aux = [str(leftValue.getValue()) , "+" , str(rightValue.getValue()), str(value)]
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if float(leftValue.getValue()) == float(temp[4]):
+                                aux[0] = temp[0]
+                                change = True
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if float(rightValue.getValue()) == float(temp[4]):
+                                aux[2] = temp[0]
+                                change = True
+                    if change:
+                        Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                    else:
+                        Environment.saveTemporal(str(leftValue.getValue()) , "+" , str(rightValue.getValue()), str(value))
                     return Symbol(
                         "",
                         float(leftValue.getValue()) + float(rightValue.getValue()),
@@ -137,6 +154,23 @@ class Arithmetic(Expression):
                         typeExpression.USIZE,0,0
                     )
                 elif(dominant == typeExpression.FLOAT):
+                    value = float(leftValue.getValue()) - float(rightValue.getValue())
+                    change = False
+                    aux = [str(leftValue.getValue()) , "-" , str(rightValue.getValue()), str(value)]
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if float(leftValue.getValue()) == float(temp[4]):
+                                aux[0] = temp[0]
+                                change = True
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if float(rightValue.getValue()) == float(temp[4]):
+                                aux[2] = temp[0]
+                                change = True
+                    if change:
+                        Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                    else:
+                        Environment.saveTemporal(str(leftValue.getValue()) , "-" , str(rightValue.getValue()), str(value))
                     return Symbol(
                         "",
                         float(leftValue.getValue()) - float(rightValue.getValue()),
@@ -206,6 +240,23 @@ class Arithmetic(Expression):
                         typeExpression.USIZE,0,0
                     )
                 elif(dominant == typeExpression.FLOAT):
+                    value = float(leftValue.getValue()) * float(rightValue.getValue())
+                    change = False
+                    aux = [str(leftValue.getValue()) , "*" , str(rightValue.getValue()), str(value)]
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if float(leftValue.getValue()) == float(temp[4]):
+                                aux[0] = temp[0]
+                                change = True
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if float(rightValue.getValue()) == float(temp[4]):
+                                aux[2] = temp[0]
+                                change = True
+                    if change:
+                        Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                    else:
+                        Environment.saveTemporal(str(leftValue.getValue()) , "*" , str(rightValue.getValue()), str(value))
                     return Symbol(
                         "",
                         float(leftValue.getValue()) * float(rightValue.getValue()),
@@ -277,6 +328,23 @@ class Arithmetic(Expression):
                             typeExpression.USIZE,0,0
                         )
                     elif(dominant == typeExpression.FLOAT):
+                        value = float(leftValue.getValue()) / float(rightValue.getValue())
+                        change = False
+                        aux = [str(leftValue.getValue()) , "/" , str(rightValue.getValue()), str(value)]
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if float(leftValue.getValue()) == float(temp[4]):
+                                    aux[0] = temp[0]
+                                    change = True
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if float(rightValue.getValue()) == float(temp[4]):
+                                    aux[2] = temp[0]
+                                    change = True
+                        if change:
+                            Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                        else:
+                            Environment.saveTemporal(str(leftValue.getValue()) , "/" , str(rightValue.getValue()), str(value))
                         return Symbol(
                             "",
                             float(leftValue.getValue()) / float(rightValue.getValue()),
@@ -420,6 +488,23 @@ class Arithmetic(Expression):
                         typeExpression.USIZE,0,0
                     )
                 elif(dominant == typeExpression.FLOAT):
+                    value = float(leftValue.getValue()) % float(rightValue.getValue())
+                    change = False
+                    aux = [str(leftValue.getValue()) , "%" , str(rightValue.getValue()), str(value)]
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if float(leftValue.getValue()) == float(temp[4]):
+                                aux[0] = temp[0]
+                                change = True
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if float(rightValue.getValue()) == float(temp[4]):
+                                aux[2] = temp[0]
+                                change = True
+                    if change:
+                        Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                    else:
+                        Environment.saveTemporal(str(leftValue.getValue()) , "%" , str(rightValue.getValue()), str(value))
                     return Symbol(
                         "",
                         float(leftValue.getValue()) % float(rightValue.getValue()),

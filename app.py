@@ -42,12 +42,16 @@ def compilar():
                 data = file.readlines()
             #print(data)
             data.append(declaracionTemporales+"\n\n")
-            data.append("void main(){\n")
+            # AQUI PUEDEN IR LAS FUNCIONES
+            data.append("int main(){\n")
             for temp in env.temporales:
-                if(len(temp)==5):
-                    data.append(temp[0]+"="+temp[1]+temp[2]+temp[3]+";\n")
-                elif(len(temp)==2):
-                    data.append(temp[0]+"="+temp[1]+";\n")
+                if(isinstance(temp,list)):
+                    if(len(temp)==5):
+                        data.append(temp[0]+" = "+temp[1]+" "+temp[2]+" "+temp[3]+";\n")
+                    elif(len(temp)==2):
+                        data.append(temp[0]+" = "+temp[1]+";\n")
+                else:
+                    data.append(temp+"\n")
             data.append("return 0;\n")
             data.append("}")
             # ======== AQUI SE ESCRIBE EN EL ARCHIVO DE SALIDA =========

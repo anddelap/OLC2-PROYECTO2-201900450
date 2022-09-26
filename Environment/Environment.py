@@ -6,6 +6,7 @@ import datetime
 errores = []
 simbolos = []
 temporales = []
+funcionesC3D = []
 contador = 0
 class Environment:
     def __init__(self,father):
@@ -26,9 +27,15 @@ class Environment:
         global contador
         temporales.append(["t"+str(contador),expresion1,operation,expresion2,resultado])
         contador += 1
+        
     def saveDeclaration(id,expresion):
         global temporales
         temporales.append([id,expresion])
+
+    def saveExpression(expression):
+        global temporales
+        temporales.append(expression)
+
     def getTemporales():
         return temporales
     # ================================================================
@@ -152,8 +159,7 @@ class Environment:
             return
         self.function[id] = function
         simbolos.append((id,"Function","-","Global",fila,columna))
-        
-    
+           
     def getFunction(self, id: str, fila, columna):
         tempEnv = self
         while(tempEnv != None):

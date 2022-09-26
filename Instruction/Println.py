@@ -18,6 +18,7 @@ class Println(Instruction):
             cantExps = len(self.expression)-1
             if cantllaves == cantExps:
                 i = 0
+                exps = []
                 for expression in range(1,len(self.expression)):
                     tempExp = self.expression[expression].execute(environment)
                     for j in range(i,len(formato.getValue())):
@@ -32,6 +33,7 @@ class Println(Instruction):
                                     i += 4
                                     break
                                 else:
+                                    exps.append([tempExp.getValue(),tempExp.getType()])
                                     salida.append(str(tempExp.getValue()))
                                     i += 2
                                     break
@@ -55,13 +57,33 @@ class Println(Instruction):
                         else:
                             salida.append(formato.getValue()[j])
                             i += 1
+                for e in exps:
+                    find = False
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if str(e[0]) == temp[4]:
+                                if(e[1]==typeExpression.INTEGER):
+                                    Environment.saveExpression("printf(\"%d\",(int)"+temp[0]+");")
+                                    find = True
+                                elif(e[1]==typeExpression.FLOAT):
+                                    Environment.saveExpression("printf(\"%f\","+temp[0]+");")
+                                    find = True
+                    if(find == False):
+                        if(e[1]==typeExpression.INTEGER):
+                            Environment.saveExpression("printf(\"%d\",(int)"+str(e[0])+");")
+                        elif(e[1]==typeExpression.FLOAT):
+                            Environment.saveExpression("printf(\"%f\","+str(e[0])+");")
+                                   
                 if(i != len(formato.getValue())):
                     for j in range(i,len(formato.getValue())):
                         salida.append(formato.getValue()[j])
-                exit=""
-                archivo = open("Salida.txt", "a")
-                archivo.write(exit.join(salida)+"\n")
-                archivo.close()
+                #exit=""
+                #archivo = open("Salida.txt", "a")
+                #archivo.write(exit.join(salida)+"\n")
+                #archivo.close()
+                """ for expression in range(1,len(self.expression)):
+                    tempExp = self.expression[expression].execute(environment)
+                    print(tempExp.getValue()) """
             else:
                 archivo = open("Salida.txt", "a")
                 archivo.write("Error: la cantidad de {} y de {:?} en el formato y de expresiones debe ser igual\n")
