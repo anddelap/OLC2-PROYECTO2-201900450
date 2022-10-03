@@ -70,7 +70,10 @@ class Declaration(Instruction):
                     if(asignacion == True):
                         Environment.saveDeclaration(aux[0],aux[1])
                     else:
-                        Environment.saveDeclaration(self.id,str(tempValue.getValue()))
+                        if(tempValue.getId()==""):
+                            Environment.saveDeclaration(self.id,str(tempValue.getValue()))
+                        elif tempValue.getId() != "":
+                            Environment.saveDeclaration(self.id,tempValue.getId())
                     
                     environment.saveVariable(self.id, tempValue, tempValue.getType(), self.fila, self.columna, self.isArray,self.mutable, False)
             else:

@@ -3,15 +3,16 @@ float stack[100000];
 float heap[100000]; 
 float P; 
 float H;
-float t0,t1,t2,t3,t4,t5;
+float t0,t1,t2,t3;
 
 int main(){
-t0 = 3.2 + 6.5;
-t1 = 9.236 * 9.6;
-t2 = t0 + t1;
-t3 = 5.6 + t2;
-t4 = 51.0 * 6.6;
-t5 = t3 + t4;
-x = t5;
+a = 5;
+c = 25;
+d = 10;
+t0 = 3 * d;
+t1 = a + t0;
+t2 = t1 + 6;
+t3 = t2 - c;
+b = t3;
 return 0;
 }

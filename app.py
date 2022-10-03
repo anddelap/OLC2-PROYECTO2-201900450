@@ -31,8 +31,9 @@ def compilar():
             #Obtiene las Salidas hacia la Salida General
             declaracionTemporales = ""
             for temp in env.temporales:
-                if(temp[0][0]=="t"):
-                    declaracionTemporales += temp[0]+","
+                if len(temp) == 5:
+                    if(temp[0][0]=="t"):
+                        declaracionTemporales += temp[0]+","
             declaracionTemporales = "float "+declaracionTemporales
             #declaracionTemporales[len(declaracionTemporales)-1] = ";"
             declaracionTemporales = declaracionTemporales[:len(declaracionTemporales)-1] + ";" + declaracionTemporales[len(declaracionTemporales):]

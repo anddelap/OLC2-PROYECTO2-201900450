@@ -11,7 +11,7 @@ class VariableCall(Expression):
         self.columna = columna
         
     def execute(self, environment: Environment) -> Symbol:
-        retValue = environment.getVariable(self.id)
+        retValue = environment.getSVariable(self.id)
         #print(retValue.getType())
         if(retValue == None):
             archivo = open("Salida.txt", "a")

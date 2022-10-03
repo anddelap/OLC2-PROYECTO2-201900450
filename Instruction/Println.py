@@ -21,6 +21,21 @@ class Println(Instruction):
                 exps = []
                 for expression in range(1,len(self.expression)):
                     tempExp = self.expression[expression].execute(environment)
+                    find = False
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if str(tempExp.getValue()) == temp[4]:
+                                if(tempExp.getType()==typeExpression.INTEGER):
+                                    Environment.saveExpression("printf(\"%d\",(int)"+temp[0]+");")
+                                    find = True
+                                elif(tempExp.getType()==typeExpression.FLOAT):
+                                    Environment.saveExpression("printf(\"%f\","+temp[0]+");")
+                                    find = True
+                    if(find == False):
+                        if(tempExp.getType()==typeExpression.INTEGER):
+                            Environment.saveExpression("printf(\"%d\",(int)"+str(tempExp.getValue())+");")
+                        elif(tempExp.getType()==typeExpression.FLOAT):
+                            Environment.saveExpression("printf(\"%f\","+str(tempExp.getValue())+");")
                     for j in range(i,len(formato.getValue())):
                         if(j != len(formato.getValue())):
                             if formato.getValue()[j] == "{" and formato.getValue()[j+1] == "}":
@@ -57,7 +72,7 @@ class Println(Instruction):
                         else:
                             salida.append(formato.getValue()[j])
                             i += 1
-                for e in exps:
+                """ for e in exps:
                     find = False
                     for temp in Environment.getTemporales():
                         if len(temp) == 5:
@@ -72,7 +87,7 @@ class Println(Instruction):
                         if(e[1]==typeExpression.INTEGER):
                             Environment.saveExpression("printf(\"%d\",(int)"+str(e[0])+");")
                         elif(e[1]==typeExpression.FLOAT):
-                            Environment.saveExpression("printf(\"%f\","+str(e[0])+");")
+                            Environment.saveExpression("printf(\"%f\","+str(e[0])+");") """
                                    
                 if(i != len(formato.getValue())):
                     for j in range(i,len(formato.getValue())):

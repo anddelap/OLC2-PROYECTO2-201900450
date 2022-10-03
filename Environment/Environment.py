@@ -7,6 +7,8 @@ errores = []
 simbolos = []
 temporales = []
 funcionesC3D = []
+stack = []
+heap = []
 contador = 0
 class Environment:
     def __init__(self,father):
@@ -17,7 +19,7 @@ class Environment:
         #Father es el entorno exterior al que podemos acceder
         self.father = father
         #self.errores={}
-    #========================== PARA VARIABLES =====================
+    #========================== PARA ERRORES =====================
     def saveError(description, ambito, fila, columna):
         global errores
         errores.append((str(len(errores)+1), description, ambito, str(fila), columna, str(datetime.datetime.now())))
@@ -38,7 +40,11 @@ class Environment:
 
     def getTemporales():
         return temporales
-    # ================================================================
+    
+    def getContador():
+        global contador
+        return contador
+    #========================== PARA VARIABLES =====================
     def saveVariable(self, id:str, value, type: typeExpression, fila: int, columna: int, isArray: bool, mutable: bool, temporal: bool):
         if(self.variable.get(id) != None):
             archivo = open("Salida.txt", "a")
