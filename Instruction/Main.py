@@ -6,6 +6,12 @@ class Main(Instruction):
     def __init__(self, ins) -> None:
         self.ins = ins
     def execute(self, environment: Environment):
-       newEnv = Environment(environment)
-       for ins in self.ins:
+        newEnv = Environment(environment)
+        Environment.saveExpression("\n")
+        Environment.saveExpression("int main(){")
+        Environment.saveExpression("\n")
+        for ins in self.ins:
             ins.execute(newEnv)
+        Environment.saveExpression("\n")
+        Environment.saveExpression("return 0;")
+        Environment.saveExpression("}")

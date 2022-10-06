@@ -3,16 +3,38 @@ float stack[100000];
 float heap[100000]; 
 float P; 
 float H;
-float t0,t1,t2,t3;
+float t0,t1,t2,t3,t4,t5,t6,t7;
+
+void imprimir(){
+t0 = 5 + 2;
+t1 = t0 + 3;
+t2 = t1 + 6;
+t3 = t2 + 9;
+a = t3;
+printf("%c",72);
+printf("%c",111);
+printf("%c",108);
+printf("%c",97);
+printf("%c",32);
+printf("%c",77);
+printf("%c",117);
+printf("%c",110);
+printf("%c",100);
+printf("%c",111);
+return;
+}
+
 
 int main(){
-a = 5;
-c = 25;
-d = 10;
-t0 = 3 * d;
-t1 = a + t0;
-t2 = t1 + 6;
-t3 = t2 - c;
-b = t3;
+
+
+t4 = 5 + 2;
+t5 = t4 + 3;
+t6 = t5 + 6;
+t7 = t6 + 9;
+a = t7;
+imprimir();
+
+
 return 0;
 }

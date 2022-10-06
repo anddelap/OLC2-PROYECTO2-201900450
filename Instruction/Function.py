@@ -22,6 +22,12 @@ class Function(Instruction):
             Main(self.block)
         else:
             environment.saveFunction(self.id,self,self.fila,self.columna)
+            Environment.saveExpression("void " + self.id + "(){")
+            
+            for ins in self.block:
+                tran = ins.execute(environment)
+            Environment.saveExpression("return;")
+            Environment.saveExpression("}")
 
     def executeFunction(self, environment: Environment):
         newEnv = Environment(environment)

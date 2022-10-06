@@ -44,7 +44,7 @@ def compilar():
             #print(data)
             data.append(declaracionTemporales+"\n\n")
             # AQUI PUEDEN IR LAS FUNCIONES
-            data.append("int main(){\n")
+            #data.append("int main(){\n")
             for temp in env.temporales:
                 if(isinstance(temp,list)):
                     if(len(temp)==5):
@@ -53,8 +53,8 @@ def compilar():
                         data.append(temp[0]+" = "+temp[1]+";\n")
                 else:
                     data.append(temp+"\n")
-            data.append("return 0;\n")
-            data.append("}")
+            #data.append("return 0;\n")
+            #data.append("}")
             # ======== AQUI SE ESCRIBE EN EL ARCHIVO DE SALIDA =========
             with open('Salida.txt', 'w') as file:
                 file.writelines(data)

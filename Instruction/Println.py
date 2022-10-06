@@ -108,13 +108,17 @@ class Println(Instruction):
         else:
             tempExp = self.expression.execute(environment)
             if(tempExp.getType() == typeExpression.PSTRING):
-                archivo = open("Salida.txt", "a")
-                archivo.write(str(tempExp.getValue())+"\n")
-                archivo.close()
+                for e in tempExp.getValue():
+                    Environment.saveExpression("printf(\"%c\","+str(ord(e))+");")
+                #archivo = open("Salida.txt", "a")
+                #archivo.write(str(tempExp.getValue())+"\n")
+                #archivo.close()
             elif(tempExp.getType() == typeExpression.STRING):
-                archivo = open("Salida.txt", "a")
-                archivo.write(str(tempExp.getValue())+"\n")
-                archivo.close()   
+                for e in tempExp.getValue():
+                    Environment.saveExpression("printf(\"%c\","+str(ord(e))+");")
+                #archivo = open("Salida.txt", "a")
+                #archivo.write(str(tempExp.getValue())+"\n")
+                #archivo.close()   
             else:
                 archivo = open("Salida.txt", "a")
                 archivo.write("Error: Esta impresion es solo para strings\n")

@@ -22,14 +22,15 @@ class CallFuncSt(Instruction):
         newEnvironment = Environment(environment.getGlobal())
         if(tempFunc != None):
             if self.parameters ==None and tempFunc.parameters==[]:
-                tran = tempFunc.executeFunction(environment)
-                if tran!=None:
-                    if(tran=="break"):
-                        return "break"
-                    elif(tran=="continue"):
-                        return "continue"
-                    else:
-                        return tran
+                Environment.saveExpression(self.id+"();")
+                #tran = tempFunc.executeFunction(environment)
+                #if tran!=None:
+                #    if(tran=="break"):
+                #        return "break"
+                #    elif(tran=="continue"):
+                #        return "continue"
+                #    else:
+                #        return tran
             else:
                 if(len(tempFunc.parameters)==len(self.parameters)):
                     for x in range(0,len(tempFunc.parameters)):
