@@ -351,7 +351,8 @@ class Arithmetic(Expression):
                         else:
                             value = 0
                         aux[3] = str(value)
-                        Environment.saveExpression("if ("+lastPos[0]+" != 0) goto L1;")
+
+                        Environment.saveExpression("if ("+lastPos[0]+" != 0) goto L"+str(Environment.getEtiqueta())+";")
                         Environment.saveExpression("printf(\"%c\", 77);")
                         Environment.saveExpression("printf(\"%c\", 97);")
                         Environment.saveExpression("printf(\"%c\", 116);")
@@ -362,8 +363,8 @@ class Arithmetic(Expression):
                         Environment.saveExpression("printf(\"%c\", 111);")
                         Environment.saveExpression("printf(\"%c\", 114);")
                         Environment.saveExpression("t"+str(Environment.getContador())+" = 0;")
-                        Environment.saveExpression("goto L2;")
-                        Environment.saveExpression("L1:")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
                         change = False
                         for temp in Environment.getTemporales():
                             if len(temp) == 5:
@@ -376,8 +377,10 @@ class Arithmetic(Expression):
                                     aux[2] = temp[0]
                                     change = True
                         Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
-                        Environment.saveExpression("L2:")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta()+1)+":")
                         #Environment.saveTemporal(str(leftValue.getValue()) , "/" , str(rightValue.getValue()),str(int(leftValue.getValue()) / int(rightValue.getValue())))
+                        Environment.aumentarContadorL()
+                        Environment.aumentarContadorL()
                         if(rightValue.getValue() != 0):
                             return Symbol(
                                 "",
@@ -397,28 +400,64 @@ class Arithmetic(Expression):
                             typeExpression.USIZE,0,0
                         )
                     elif(dominant == typeExpression.FLOAT):
-                        value = float(leftValue.getValue()) / float(rightValue.getValue())
+                        last = len(Environment.getTemporales())-1
+                        lastPos= Environment.getTemporales()[last]
+                        left = leftValue.getValue()
+                        right = rightValue.getValue()
+                        aux = [str(leftValue.getValue()) , "/" , str(rightValue.getValue()), ""]
+                        if(leftValue.getId() != ""):
+                            left = (leftValue.getValue().getValue())
+                            aux[0] = leftValue.getId()
+                        if(rightValue.getId() != ""):
+                            right = (rightValue.getValue().getValue())
+                            aux[2] = rightValue.getId()
+                        if(float(right)!=0):
+                            value = math.trunc(left/right)
+                        else:
+                            value = 0
+                        aux[3] = str(value)
+
+                        Environment.saveExpression("if ("+lastPos[0]+" != 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("printf(\"%c\", 77);")
+                        Environment.saveExpression("printf(\"%c\", 97);")
+                        Environment.saveExpression("printf(\"%c\", 116);")
+                        Environment.saveExpression("printf(\"%c\", 104);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("t"+str(Environment.getContador())+" = 0;")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
                         change = False
-                        aux = [str(leftValue.getValue()) , "/" , str(rightValue.getValue()), str(value)]
                         for temp in Environment.getTemporales():
                             if len(temp) == 5:
-                                if float(leftValue.getValue()) == float(temp[4]):
+                                if float(left) == (float(temp[4])):
                                     aux[0] = temp[0]
                                     change = True
                         for temp in Environment.getTemporales():
                             if len(temp) == 5:
-                                if float(rightValue.getValue()) == float(temp[4]):
+                                if float(right) == (float(temp[4])):
                                     aux[2] = temp[0]
                                     change = True
-                        if change:
-                            Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                        Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta()+1)+":")
+                        #Environment.saveTemporal(str(leftValue.getValue()) , "/" , str(rightValue.getValue()),str(int(leftValue.getValue()) / int(rightValue.getValue())))
+                        Environment.aumentarContadorL()
+                        Environment.aumentarContadorL()
+                        if(rightValue.getValue() != 0):
+                            return Symbol(
+                                "",
+                                value,
+                                typeExpression.FLOAT,0,0
+                            )
                         else:
-                            Environment.saveTemporal(str(leftValue.getValue()) , "/" , str(rightValue.getValue()), str(value))
-                        return Symbol(
-                            "",
-                            float(leftValue.getValue()) / float(rightValue.getValue()),
-                            typeExpression.FLOAT,0,0
-                        )
+                            return Symbol(
+                                "",
+                                0,
+                                typeExpression.FLOAT,0,0
+                            )
                     elif(dominant == typeExpression.BOOL):
                         archivo = open("Salida.txt", "a")
                         archivo.write("No es posible dividir "+ str(leftValue.getValue()) + " y "+ str(rightValue.getValue())+"\n")
@@ -544,7 +583,8 @@ class Arithmetic(Expression):
                     else:
                         value = 0
                     aux[3] = str(value)
-                    Environment.saveExpression("if ("+lastPos[0]+" != 0) goto L1;")
+
+                    Environment.saveExpression("if ("+lastPos[0]+" != 0) goto L"+str(Environment.getEtiqueta())+";")
                     Environment.saveExpression("printf(\"%c\", 77);")
                     Environment.saveExpression("printf(\"%c\", 97);")
                     Environment.saveExpression("printf(\"%c\", 116);")
@@ -555,8 +595,8 @@ class Arithmetic(Expression):
                     Environment.saveExpression("printf(\"%c\", 111);")
                     Environment.saveExpression("printf(\"%c\", 114);")
                     Environment.saveExpression("t"+str(Environment.getContador())+" = 0;")
-                    Environment.saveExpression("goto L2;")
-                    Environment.saveExpression("L1:")
+                    Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
                     change = False
                     for temp in Environment.getTemporales():
                         if len(temp) == 5:
@@ -569,8 +609,10 @@ class Arithmetic(Expression):
                                 aux[2] = temp[0]
                                 change = True
                     Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
-                    Environment.saveExpression("L2:")
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta()+1)+":")
                     #Environment.saveTemporal(str(leftValue.getValue()) , "/" , str(rightValue.getValue()),str(int(leftValue.getValue()) / int(rightValue.getValue())))
+                    Environment.aumentarContadorL()
+                    Environment.aumentarContadorL()
                     if(rightValue.getValue() != 0):
                         return Symbol(
                             "",
@@ -590,28 +632,64 @@ class Arithmetic(Expression):
                         typeExpression.USIZE,0,0
                     )
                 elif(dominant == typeExpression.FLOAT):
-                    value = float(leftValue.getValue()) % float(rightValue.getValue())
+                    last = len(Environment.getTemporales())-1
+                    lastPos= Environment.getTemporales()[last]
+                    left = leftValue.getValue()
+                    right = rightValue.getValue()
+                    aux = [str(leftValue.getValue()) , "%" , str(rightValue.getValue()), ""]
+                    if(leftValue.getId() != ""):
+                        left = (leftValue.getValue().getValue())
+                        aux[0] = leftValue.getId()
+                    if(rightValue.getId() != ""):
+                        right = (rightValue.getValue().getValue())
+                        aux[2] = rightValue.getId()
+                    if(float(right)!=0):
+                        value = math.trunc(left%right)
+                    else:
+                        value = 0
+                    aux[3] = str(value)
+
+                    Environment.saveExpression("if ("+lastPos[0]+" != 0) goto L"+str(Environment.getEtiqueta())+";")
+                    Environment.saveExpression("printf(\"%c\", 77);")
+                    Environment.saveExpression("printf(\"%c\", 97);")
+                    Environment.saveExpression("printf(\"%c\", 116);")
+                    Environment.saveExpression("printf(\"%c\", 104);")
+                    Environment.saveExpression("printf(\"%c\", 69);")
+                    Environment.saveExpression("printf(\"%c\", 114);")
+                    Environment.saveExpression("printf(\"%c\", 114);")
+                    Environment.saveExpression("printf(\"%c\", 111);")
+                    Environment.saveExpression("printf(\"%c\", 114);")
+                    Environment.saveExpression("t"+str(Environment.getContador())+" = 0;")
+                    Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
                     change = False
-                    aux = [str(leftValue.getValue()) , "%" , str(rightValue.getValue()), str(value)]
                     for temp in Environment.getTemporales():
                         if len(temp) == 5:
-                            if float(leftValue.getValue()) == float(temp[4]):
+                            if float(left) == (float(temp[4])):
                                 aux[0] = temp[0]
                                 change = True
                     for temp in Environment.getTemporales():
                         if len(temp) == 5:
-                            if float(rightValue.getValue()) == float(temp[4]):
+                            if float(right) == (float(temp[4])):
                                 aux[2] = temp[0]
                                 change = True
-                    if change:
-                        Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                    Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta()+1)+":")
+                    #Environment.saveTemporal(str(leftValue.getValue()) , "/" , str(rightValue.getValue()),str(int(leftValue.getValue()) / int(rightValue.getValue())))
+                    Environment.aumentarContadorL()
+                    Environment.aumentarContadorL()
+                    if(rightValue.getValue() != 0):
+                        return Symbol(
+                            "",
+                            value,
+                            typeExpression.FLOAT,0,0
+                        )
                     else:
-                        Environment.saveTemporal(str(leftValue.getValue()) , "%" , str(rightValue.getValue()), str(value))
-                    return Symbol(
-                        "",
-                        float(leftValue.getValue()) % float(rightValue.getValue()),
-                        typeExpression.FLOAT,0,0
-                    )
+                        return Symbol(
+                            "",
+                            0,
+                            typeExpression.FLOAT,0,0
+                        )
                 elif(dominant == typeExpression.BOOL):
                     archivo = open("Salida.txt", "a")
                     archivo.write("No es posible realizar la operacion modulo con "+ str(leftValue.getValue()) + " y "+ str(rightValue.getValue())+"\n")

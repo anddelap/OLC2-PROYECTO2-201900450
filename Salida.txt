@@ -3,37 +3,65 @@ float stack[100000];
 float heap[100000]; 
 float P; 
 float H;
-float t0,t1,t2,t3,t4,t5,t6,t7;
+float t0,t1,t2,t3,t4,t5,t6,t7,t8;
 
-void imprimir(){
-t0 = 5 + 2;
-t1 = t0 + 3;
-t2 = t1 + 6;
-t3 = t2 + 9;
-a = t3;
-printf("%c",72);
-printf("%c",111);
-printf("%c",108);
-printf("%c",97);
-printf("%c",32);
-printf("%c",77);
-printf("%c",117);
-printf("%c",110);
-printf("%c",100);
-printf("%c",111);
-return;
-}
 
 
 int main(){
 
 
-t4 = 5 + 2;
-t5 = t4 + 3;
-t6 = t5 + 6;
-t7 = t6 + 9;
-a = t7;
-imprimir();
+t0 = 5;
+t1 = 2;
+t2 = t0 + t1;
+t3 = 6;
+if (t3 != 0) goto L0;
+printf("%c", 77);
+printf("%c", 97);
+printf("%c", 116);
+printf("%c", 104);
+printf("%c", 69);
+printf("%c", 114);
+printf("%c", 114);
+printf("%c", 111);
+printf("%c", 114);
+t4 = 0;
+goto L1;
+L0:
+t4 = t2 / t3;
+L1:
+t5 = 7;
+if (t5 != 0) goto L2;
+printf("%c", 77);
+printf("%c", 97);
+printf("%c", 116);
+printf("%c", 104);
+printf("%c", 69);
+printf("%c", 114);
+printf("%c", 114);
+printf("%c", 111);
+printf("%c", 114);
+t6 = 0;
+goto L3;
+L2:
+t6 = t4 / t5;
+L3:
+t7 = 8;
+if (t7 != 0) goto L4;
+printf("%c", 77);
+printf("%c", 97);
+printf("%c", 116);
+printf("%c", 104);
+printf("%c", 69);
+printf("%c", 114);
+printf("%c", 114);
+printf("%c", 111);
+printf("%c", 114);
+t8 = 0;
+goto L5;
+L4:
+t8 = t6 / t7;
+L5:
+a = t8;
 
 
 return 0;

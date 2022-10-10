@@ -10,5 +10,6 @@ class Primitive(Expression):
         self.type = type
 
     def execute(self, environment: Environment) -> Symbol:
+        Environment.saveTemporal(str(self.value),"","",self.value)
         return Symbol("", self.value, self.type,0,0)
             

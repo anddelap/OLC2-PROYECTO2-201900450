@@ -10,6 +10,7 @@ funcionesC3D = []
 stack = []
 heap = []
 contador = 0
+contadorL = 0
 class Environment:
     def __init__(self,father):
         #Usamos un dicionario para nuestra tabla de simbolos, guardara el id como clave y como cuerpo el simbolo
@@ -44,6 +45,15 @@ class Environment:
     def getContador():
         global contador
         return contador
+    #========================== ETIQUETAS ==========================
+    def getEtiqueta():
+        global contadorL
+        return contadorL
+
+    def aumentarContadorL():
+        global contadorL
+        contadorL += 1
+    
     #========================== PARA VARIABLES =====================
     def saveVariable(self, id:str, value, type: typeExpression, fila: int, columna: int, isArray: bool, mutable: bool, temporal: bool):
         if(self.variable.get(id) != None):
