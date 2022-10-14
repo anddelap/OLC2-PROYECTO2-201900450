@@ -351,8 +351,18 @@ class Arithmetic(Expression):
                         else:
                             value = 0
                         aux[3] = str(value)
-
-                        Environment.saveExpression("if ("+lastPos[0]+" != 0) goto L"+str(Environment.getEtiqueta())+";")
+                        change = False
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if int(left) == math.trunc(float(temp[4])):
+                                    aux[0] = temp[0]
+                                    change = True
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if int(right) == math.trunc(float(temp[4])):
+                                    aux[2] = temp[0]
+                                    change = True
+                        Environment.saveExpression("if ("+aux[2]+" != 0) goto L"+str(Environment.getEtiqueta())+";")
                         Environment.saveExpression("printf(\"%c\", 77);")
                         Environment.saveExpression("printf(\"%c\", 97);")
                         Environment.saveExpression("printf(\"%c\", 116);")
@@ -365,17 +375,6 @@ class Arithmetic(Expression):
                         Environment.saveExpression("t"+str(Environment.getContador())+" = 0;")
                         Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
                         Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
-                        change = False
-                        for temp in Environment.getTemporales():
-                            if len(temp) == 5:
-                                if int(left) == math.trunc(float(temp[4])):
-                                    aux[0] = temp[0]
-                                    change = True
-                        for temp in Environment.getTemporales():
-                            if len(temp) == 5:
-                                if int(right) == math.trunc(float(temp[4])):
-                                    aux[2] = temp[0]
-                                    change = True
                         Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
                         Environment.saveExpression("L"+str(Environment.getEtiqueta()+1)+":")
                         #Environment.saveTemporal(str(leftValue.getValue()) , "/" , str(rightValue.getValue()),str(int(leftValue.getValue()) / int(rightValue.getValue())))
@@ -417,7 +416,7 @@ class Arithmetic(Expression):
                             value = 0
                         aux[3] = str(value)
 
-                        Environment.saveExpression("if ("+lastPos[0]+" != 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if ("+aux[2]+" != 0) goto L"+str(Environment.getEtiqueta())+";")
                         Environment.saveExpression("printf(\"%c\", 77);")
                         Environment.saveExpression("printf(\"%c\", 97);")
                         Environment.saveExpression("printf(\"%c\", 116);")
@@ -584,7 +583,7 @@ class Arithmetic(Expression):
                         value = 0
                     aux[3] = str(value)
 
-                    Environment.saveExpression("if ("+lastPos[0]+" != 0) goto L"+str(Environment.getEtiqueta())+";")
+                    Environment.saveExpression("if ("+aux[2]+" != 0) goto L"+str(Environment.getEtiqueta())+";")
                     Environment.saveExpression("printf(\"%c\", 77);")
                     Environment.saveExpression("printf(\"%c\", 97);")
                     Environment.saveExpression("printf(\"%c\", 116);")
@@ -649,7 +648,7 @@ class Arithmetic(Expression):
                         value = 0
                     aux[3] = str(value)
 
-                    Environment.saveExpression("if ("+lastPos[0]+" != 0) goto L"+str(Environment.getEtiqueta())+";")
+                    Environment.saveExpression("if ("+aux[2]+" != 0) goto L"+str(Environment.getEtiqueta())+";")
                     Environment.saveExpression("printf(\"%c\", 77);")
                     Environment.saveExpression("printf(\"%c\", 97);")
                     Environment.saveExpression("printf(\"%c\", 116);")

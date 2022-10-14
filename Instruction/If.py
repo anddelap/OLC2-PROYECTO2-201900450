@@ -18,16 +18,18 @@ class If(Instruction):
         self.transfer = False
 
     def execute(self, environment: Environment):
+        Environment.saveExpression("Entra:")
         tempCondition: Symbol = self.condition.execute(environment)
+        Environment.saveExpression("Sale:")
         count = copy.deepcopy(Environment.getEtiqueta())
         #Environment.aumentarContadorL()
         #Environment.aumentarContadorL()
+        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
         Environment.aumentarContadorL()
-        Environment.saveExpression("L"+str(count)+":")
         newEnv = Environment(environment)
         for ins in self.block:
             #ins.execute(newEnv)
-            Environment.aumentarContadorL()
+            #Environment.aumentarContadorL()
             tran = ins.execute(newEnv)
             tipo = str(type(ins))
             if tipo == "<class 'Expression.transSen.transSen'>":
@@ -71,11 +73,11 @@ class If(Instruction):
                         except:
                             return tran 
             else:
-                Environment.saveExpression("goto L"+str(count+2)+";")  
-                Environment.saveExpression("L"+str(count+1)+":") 
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+2)+";")  
+                Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
+                Environment.aumentarContadorL()
                 for ins in self.elseBlock:
                     #ins.execute(newEnv)
-                    Environment.aumentarContadorL()
                     tran = ins.execute(newEnv)
                     tipo = str(type(ins))
                     if tipo == "<class 'Expression.transSen.transSen'>":
@@ -95,13 +97,14 @@ class If(Instruction):
                                 return tran.execute(newEnv)
                             except:
                                 return tran
-                Environment.saveExpression("L"+str(count+2)+":")
+                Environment.aumentarContadorL()
+                Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
                 #Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+2)+";")
         #else:
             #Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+2)+";")
         else:
-            
-            Environment.saveExpression("L"+str(count+1)+":")
+            Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
+            Environment.aumentarContadorL()
         """ if tempCondition.type == typeExpression.BOOL:
             if(tempCondition.getValue() == True):
                 newEnv = Environment(environment)

@@ -33,18 +33,19 @@ class CallFuncSt(Instruction):
                 #        return tran
             else:
                 if(len(tempFunc.parameters)==len(self.parameters)):
-                    for x in range(0,len(tempFunc.parameters)):
-                        tempPar: Parameter = tempFunc.parameters[x]
+                    Environment.saveExpression(self.id+"();")
+                    #for x in range(0,len(tempFunc.parameters)):
+                    #    tempPar: Parameter = tempFunc.parameters[x]
                         
-                        tempPar.setValue(self.parameters[x])
-                    tran = tempFunc.executeFunction(environment)
-                    if tran!=None:
-                        if(tran=="break"):
-                            return "break"
-                        elif(tran=="continue"):
-                            return "continue"
-                        else:
-                            return tran
+                    #    tempPar.setValue(self.parameters[x])
+                    #tran = tempFunc.executeFunction(environment)
+                    #if tran!=None:
+                    #    if(tran=="break"):
+                    #        return "break"
+                    #    elif(tran=="continue"):
+                    #        return "continue"
+                    #    else:
+                    #        return tran
                             #return Symbol("", tran.value, tran.type,0,0)   
                 else:
                     archivo = open("Salida.txt", "a")

@@ -9,6 +9,8 @@ temporales = []
 funcionesC3D = []
 stack = []
 heap = []
+P = 0
+H = 0
 contador = 0
 contadorL = 0
 class Environment:
@@ -31,9 +33,10 @@ class Environment:
         temporales.append(["t"+str(contador),expresion1,operation,expresion2,resultado])
         contador += 1
         
-    def saveDeclaration(id,expresion):
+    def saveDeclaration(id,expresion,pointer):
         global temporales
-        temporales.append([id,expresion])
+
+        temporales.append([id,expresion,pointer])
 
     def saveExpression(expression):
         global temporales
@@ -45,6 +48,10 @@ class Environment:
     def getContador():
         global contador
         return contador
+        
+    def aumentarContador():
+        global contador
+        contador +=1
     #========================== ETIQUETAS ==========================
     def getEtiqueta():
         global contadorL
@@ -53,7 +60,18 @@ class Environment:
     def aumentarContadorL():
         global contadorL
         contadorL += 1
-    
+    # ========================== POINTER ==========================
+    def restartPointer():
+        global P
+        P = 1
+
+    def aumentarP():
+        global P
+        P += 1
+
+    def getP():
+        global P
+        return P
     #========================== PARA VARIABLES =====================
     def saveVariable(self, id:str, value, type: typeExpression, fila: int, columna: int, isArray: bool, mutable: bool, temporal: bool):
         if(self.variable.get(id) != None):

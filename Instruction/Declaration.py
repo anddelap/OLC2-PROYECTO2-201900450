@@ -1,4 +1,5 @@
 from copy import copy
+from telnetlib import NEW_ENVIRON
 from xmlrpc.client import FastMarshaller
 from Environment.Symbol import Symbol
 from Expression.Primitive import Primitive
@@ -42,40 +43,79 @@ class Declaration(Instruction):
                             Environment.saveError("Error: Los tipos no coinciden en la declaracion",'Local', self.fila, self.columna)
                             environment.saveVariable('None',Primitive(0,typeExpression.INTEGER).execute(environment),typeExpression.INTEGER, self.fila, self.columna,self.isArray,self.mutable,False)
                             return
-                    aux = [self.id,""]
+                    aux = [self.id,str(tempValue.getValue())]
                     asignacion = False
+                    value = tempValue
+                    if(tempValue.getId() != ""):
+                        value = tempValue.getValue()
+                        aux[1] = tempValue.getId()
                     for temp in Environment.getTemporales():
                         #print(len(temp))
                         if(len(temp) == 5):
-                            if str(tempValue.getValue()) == temp[4]:
-                                aux[1] = str(temp[0])
-                                asignacion = True
-                            #Environment.saveDeclaration(self.id,temp[0])
-                    if(asignacion == True):
-                        Environment.saveDeclaration(aux[0],aux[1])
-                    else:
-                        Environment.saveDeclaration(self.id,str(tempValue.getValue()))
-
-                    environment.saveVariable(self.id, tempValue, self.type, self.fila, self.columna, self.isArray,self.mutable, False)
-                else:
-                    aux = [self.id,""]
-                    asignacion = False
-                    for temp in Environment.getTemporales():
-                        #print(len(temp))
-                        if(len(temp) == 5):
-                            if str(tempValue.getValue()) == temp[4]:
+                            if str(value.getValue()) == temp[4]:
                                 aux[1] = temp[0]
                                 asignacion = True
                             #Environment.saveDeclaration(self.id,temp[0])
-                    if(asignacion == True):
-                        Environment.saveDeclaration(aux[0],aux[1])
-                    else:
-                        if(tempValue.getId()==""):
-                            Environment.saveDeclaration(self.id,str(tempValue.getValue()))
-                        elif tempValue.getId() != "":
-                            Environment.saveDeclaration(self.id,tempValue.getId())
-                    
-                    environment.saveVariable(self.id, tempValue, tempValue.getType(), self.fila, self.columna, self.isArray,self.mutable, False)
+                    #if(asignacion == True):
+                    #    Environment.saveDeclaration(aux[0],aux[1])
+                    #else:
+                    #    if(tempValue.getId()==""):
+                    #        Environment.saveDeclaration(self.id,str(tempValue.getValue()))
+                    #    elif tempValue.getId() != "":
+                    #        Environment.saveDeclaration(self.id,tempValue.getId())
+                    if(tempValue.getType() == typeExpression.INTEGER or tempValue.getType() == typeExpression.FLOAT):
+                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(Environment.getP()))
+                        Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+aux[1]+";")
+                        Environment.saveDeclaration(self.id,aux[1],"P + "+str(Environment.getP()))
+                    elif(tempValue.getType() == typeExpression.STRING or tempValue.getType() == typeExpression.PSTRING):
+                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(Environment.getP()))
+                        Environment.saveTemporal("H","","",0)
+                        Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-2)+"] = t"+str(Environment.getContador()-1)+";")
+                        Environment.saveExpression("heap[(int)H] = "+str(len(value.getValue()))+";")
+                        for v in value.getValue():
+                            Environment.saveExpression("H = H + 1;")
+                            Environment.saveExpression("heap[(int)H] = "+str(ord(v))+";")
+                        Environment.saveExpression("H = H + 1;")
+                        Environment.saveDeclaration(self.id,aux[1],"P + "+str(Environment.getP()))
+                    environment.saveVariable(self.id, tempValue, self.type, self.fila, self.columna, self.isArray,self.mutable, False)
+                    Environment.aumentarP()
+                else:
+                    aux = [self.id,str(tempValue.getValue())]
+                    asignacion = False
+                    value = tempValue
+                    if(tempValue.getId() != ""):
+                        value = tempValue.getValue()
+                        aux[1] = tempValue.getId()
+                    for temp in Environment.getTemporales():
+                        #print(len(temp))
+                        if(len(temp) == 5):
+                            if str(value.getValue()) == temp[4]:
+                                aux[1] = temp[0]
+                                asignacion = True
+                            #Environment.saveDeclaration(self.id,temp[0])
+                    #if(asignacion == True):
+                    #    Environment.saveDeclaration(aux[0],aux[1])
+                    #else:
+                    #    if(tempValue.getId()==""):
+                    #        Environment.saveDeclaration(self.id,str(tempValue.getValue()))
+                    #    elif tempValue.getId() != "":
+                    #        Environment.saveDeclaration(self.id,tempValue.getId())
+                    if(tempValue.getType() == typeExpression.INTEGER or tempValue.getType() == typeExpression.FLOAT):
+                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(Environment.getP()))
+                        Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+aux[1]+";")
+                        Environment.saveDeclaration(self.id,aux[1],"P + "+str(Environment.getP()))
+                    elif(tempValue.getType() == typeExpression.STRING or tempValue.getType() == typeExpression.PSTRING):
+                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(Environment.getP()))
+                        Environment.saveTemporal("H","","",0)
+                        Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-2)+"] = t"+str(Environment.getContador()-1)+";")
+                        Environment.saveExpression("heap[(int)H] = "+str(len(value.getValue()))+";")
+                        for v in value.getValue():
+                            Environment.saveExpression("H = H + 1;")
+                            Environment.saveExpression("heap[(int)H] = "+str(ord(v))+";")
+                        Environment.saveExpression("H = H + 1;")
+                        Environment.saveDeclaration(self.id,aux[1],"P + "+str(Environment.getP()))
+                    environment.saveVariable(self.id, value, tempValue.getType(), self.fila, self.columna, self.isArray,self.mutable, False)
+                    Environment.aumentarP()
             else:
                 if(self.isVector == False):
                     correct = True

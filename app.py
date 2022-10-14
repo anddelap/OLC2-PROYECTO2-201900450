@@ -43,14 +43,18 @@ def compilar():
                 # read a list of lines into data
                 data = file.readlines()
             #print(data)
-            data.append(declaracionTemporales+"\n\n")
+            data.append(declaracionTemporales+"\n")
+            data.append("P = 0;\n\n")
             # AQUI PUEDEN IR LAS FUNCIONES
             #data.append("int main(){\n")
             for temp in env.temporales:
                 if(isinstance(temp,list)):
                     if(len(temp)==5):
                         if(temp[2]=="" and temp[3]==""):
-                            data.append(temp[0]+" = "+temp[1]+";\n")
+                            if(temp[1]!=""):
+                                data.append(temp[0]+" = "+temp[1]+";\n")
+                        elif(temp[1]=="" and temp[2]=="" and temp[3]==""):
+                            continue
                         else:
                             data.append(temp[0]+" = "+temp[1]+" "+temp[2]+" "+temp[3]+";\n")
                     elif(len(temp)==2):

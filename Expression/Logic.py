@@ -33,10 +33,25 @@ class Logic(Expression):
                     Environment.saveError("No es posible realizar la operacion not con "+ str(leftValue.getValue()), 'Global', self.fila, self.columna)
         else:      
             #Resolvemos de la derecha
+            #Environment.saveExpression("Hace Esto:")
+            print(str(Environment.getEtiqueta()))
+            Environment.saveExpression("L"+str(Environment.getEtiqueta()-2)+":")
             rightValue = self.rightExp.execute(environment)
             if (self.operation == logicOperation.AND):
                 #print("En and"+str(rightValue.getType()))
                 #print("En and"+str(leftValue.getType()))
+                Environment.saveExpression("L"+str(Environment.getEtiqueta()-2)+":")
+                Environment.saveExpression("t"+str(Environment.getContador())+" = 1;")
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta())+";")
+                Environment.saveExpression("L"+str(Environment.getEtiqueta()-3)+":"+" L"+str(Environment.getEtiqueta()-1)+":")
+                Environment.saveExpression("t"+str(Environment.getContador())+" = 0;")
+                Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                Environment.aumentarContadorL()
+                Environment.saveExpression("if ( t"+str(Environment.getContador())+" == 1) goto L"+str(Environment.getEtiqueta())+";")
+                Environment.saveTemporal("", "", "", 0)
+                #Environment.aumentarContadorL()
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                #Environment.aumentarContadorL()
                 if(leftValue.getType() == typeExpression.BOOL and rightValue.getType() == typeExpression.BOOL):
                     return Symbol(
                         "",

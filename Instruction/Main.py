@@ -9,7 +9,8 @@ class Main(Instruction):
         newEnv = Environment(environment)
         Environment.saveExpression("\n")
         Environment.saveExpression("int main(){")
-        Environment.saveExpression("\n")
+        Environment.saveExpression("H = 0;\n")
+        Environment.restartPointer()
         for ins in self.ins:
             ins.execute(newEnv)
         Environment.saveExpression("\n")

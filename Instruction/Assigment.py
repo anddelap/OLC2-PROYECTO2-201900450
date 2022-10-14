@@ -58,7 +58,8 @@ class Assignment(Instruction):
                     #archivo.close()
                     Environment.saveError("Error: la variable " + id + " no existe", 'Local', self.fila, self.columna)
             else:
-                asig = environment.getVariable(self.id)
+                asig = environment.getSVariable(self.id)
+                #print(asig.getId())
                 if(asig==None):
                     archivo = open("Salida.txt", "a")
                     archivo.write("Error: la variable " + id + " no existe\n")
@@ -68,6 +69,34 @@ class Assignment(Instruction):
                     #archivo.close()
                     Environment.saveError("Error: la variable " + id + " no existe", 'Local', self.fila, self.columna)
                 else:
+                    if(asig.getType()==typeExpression.STRING or asig.getType()==typeExpression.PSTRING):
+                        aux = [self.id,str(newValue.getValue())]
+                        asignacion = False
+                        value = newValue
+                        if(newValue.getId() != ""):
+                            value = newValue.getValue()
+                            aux[1] = newValue.getId()
+                        for temp in Environment.getTemporales():
+                            #print(len(temp))
+                            if(len(temp) == 5):
+                                if str(value.getValue()) == temp[4]:
+                                    aux[1] = temp[0]
+                                    asignacion = True
+                        pointer=""
+                        for temp in Environment.getTemporales(): 
+                            if(isinstance(temp, list)):
+                                if(len(temp) == 3):
+                                    if(temp[0] == self.id):
+                                        pointer = temp[2]
+                                        break
+                        Environment.saveTemporal(pointer,"","",Environment.getP())
+                        Environment.saveTemporal("H","","",0)
+                        Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-2)+"] = t"+str(Environment.getContador()-1)+";")
+                        Environment.saveExpression("heap[(int)H] = "+str(len(value.getValue()))+";")
+                        for v in value.getValue():
+                            Environment.saveExpression("H = H + 1;")
+                            Environment.saveExpression("heap[(int)H] = "+str(ord(v))+";")
+                        Environment.saveExpression("H = H + 1;")
                     environment.alterVariable(self.id, newValue, self.fila, self.columna)
         else:
                 List = environment.getVariable(self.id)

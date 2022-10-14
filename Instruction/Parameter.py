@@ -23,10 +23,12 @@ class Parameter(Instruction):
 
     def execute(self, environment: Environment):
         tempValue = self.value.execute(environment)
-        if(self.tipo != None):
-            environment.saveVariable(self.id,tempValue,tempValue.getType(),self.fila,self.columna, False, True, True)
-        else:
-            environment.saveVariable(self.id,tempValue,self.tipo,self.fila,self.columna, False, True, True)
+
+        #if(self.tipo != None):
+        #    environment.saveVariable(self.id,tempValue,tempValue.getType(),self.fila,self.columna, False, True, True)
+        #else:
+
+        #    environment.saveVariable(self.id,tempValue,self.tipo,self.fila,self.columna, False, True, True)
             
 
         

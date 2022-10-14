@@ -22,8 +22,11 @@ class Function(Instruction):
             Main(self.block)
         else:
             environment.saveFunction(self.id,self,self.fila,self.columna)
+            Environment.restartPointer()
+            for parameter in self.parameters:
+                parameter.execute(environment)
             Environment.saveExpression("void " + self.id + "(){")
-            
+            #    parameter.execute(environment)
             for ins in self.block:
                 tran = ins.execute(environment)
             Environment.saveExpression("return;")
