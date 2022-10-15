@@ -24,7 +24,7 @@ class Println(Instruction):
                     find = False
                     for temp in Environment.getTemporales():
                         if len(temp) == 5:
-                            if str(tempExp.getValue()) == temp[4]:
+                            if str(tempExp.getValue()) == str(temp[4]):
                                 if(tempExp.getType()==typeExpression.INTEGER):
                                     Environment.saveExpression("printf(\"%d\",(int)"+temp[0]+");")
                                     find = True

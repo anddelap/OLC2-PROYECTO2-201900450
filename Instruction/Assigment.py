@@ -58,7 +58,7 @@ class Assignment(Instruction):
                     #archivo.close()
                     Environment.saveError("Error: la variable " + id + " no existe", 'Local', self.fila, self.columna)
             else:
-                asig = environment.getSVariable(self.id)
+                asig = environment.getVariable(self.id)
                 #print(asig.getId())
                 if(asig==None):
                     archivo = open("Salida.txt", "a")
@@ -79,7 +79,7 @@ class Assignment(Instruction):
                         for temp in Environment.getTemporales():
                             #print(len(temp))
                             if(len(temp) == 5):
-                                if str(value.getValue()) == temp[4]:
+                                if str(value.getValue()) == str(temp[4]):
                                     aux[1] = temp[0]
                                     asignacion = True
                         pointer=""
@@ -97,7 +97,28 @@ class Assignment(Instruction):
                             Environment.saveExpression("H = H + 1;")
                             Environment.saveExpression("heap[(int)H] = "+str(ord(v))+";")
                         Environment.saveExpression("H = H + 1;")
-                    environment.alterVariable(self.id, newValue, self.fila, self.columna)
+                    elif(asig.getType()==typeExpression.INTEGER or asig.getType()==typeExpression.FLOAT):
+                        aux = [self.id,str(newValue.getValue())]
+                        value = newValue
+                        if(newValue.getId() != ""):
+                            value = newValue.getValue()
+                            aux[1] = newValue.getId()
+                        for temp in Environment.getTemporales():
+                            #print(len(temp))
+                            if(len(temp) == 5):
+                                if str(value.getValue()) == temp[4]:
+                                    aux[1] = temp[0]
+                                    asignacion = True
+                        pointer=""
+                        for temp in Environment.getTemporales(): 
+                            if(isinstance(temp, list)):
+                                if(len(temp) == 3):
+                                    if(temp[0] == self.id):
+                                        pointer = temp[2]
+                                        break
+                        Environment.saveTemporal(pointer,"","",Environment.getP())
+                        Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+aux[1]+";")     
+                    environment.alterVariable(self.id, value, self.fila, self.columna)
         else:
                 List = environment.getVariable(self.id)
                 todosInt = False

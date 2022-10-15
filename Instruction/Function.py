@@ -18,18 +18,19 @@ class Function(Instruction):
         self.columna = columna
 
     def execute(self, environment: Environment):
+        newEnv = Environment(environment)
         if(self.id == "main"):
             Main(self.block)
         else:
             environment.saveFunction(self.id,self,self.fila,self.columna)
             Environment.restartPointer()
-            for parameter in self.parameters:
-                parameter.execute(environment)
+            #for parameter in self.parameters:
+            #    parameter.execute(environment)
             Environment.saveExpression("void " + self.id + "(){")
             #    parameter.execute(environment)
             for ins in self.block:
-                tran = ins.execute(environment)
-            Environment.saveExpression("return;")
+                tran = ins.execute(newEnv)
+            #Environment.saveExpression("return;")
             Environment.saveExpression("}")
 
     def executeFunction(self, environment: Environment):

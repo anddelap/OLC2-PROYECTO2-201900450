@@ -11,13 +11,23 @@ class VariableCall(Expression):
         self.columna = columna
         
     def execute(self, environment: Environment) -> Symbol:
-        retValue = environment.getSVariable(self.id)
+        retValue = environment.getVariable(self.id)
         #print(retValue.getType())
         if(retValue == None):
             archivo = open("Salida.txt", "a")
             archivo.write("Error: la variable "+ str(self.id) + " no existe\n")
             archivo.close()
             Environment.saveError("Error: la variable "+ str(self.id) + " no existe",'Local', self.fila, self.columna)
-            retValue = Primitive(0,typeExpression.INTEGER).execute(environment)
-
-        return retValue
+            return Primitive(0,typeExpression.INTEGER).execute(environment)
+        else:
+            pointer=""
+            for temp in Environment.getTemporales(): 
+                if(isinstance(temp, list)):
+                    if(len(temp) == 3):
+                        if(temp[0] == self.id):
+                            pointer = temp[2]
+                            break
+            Environment.saveTemporal(pointer,"","",Environment.getP())
+            Environment.saveTemporal("stack[(int)t"+str(Environment.getContador()-1)+"]","","",retValue.getValue())
+            #Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+aux[1]+";")    
+            return retValue
