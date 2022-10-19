@@ -1,3 +1,4 @@
+from turtle import st
 from Enum.typeExpression import typeExpression
 from Environment.Symbol import Symbol
 from Abstract.Instruction import Instruction
@@ -24,18 +25,47 @@ class Println(Instruction):
                     find = False
                     for temp in Environment.getTemporales():
                         if len(temp) == 5:
-                            if str(tempExp.getValue()) == str(temp[4]):
+                            if (str(tempExp.getValue()) == str(temp[4])):
                                 if(tempExp.getType()==typeExpression.INTEGER):
                                     Environment.saveExpression("printf(\"%d\",(int)"+temp[0]+");")
                                     find = True
                                 elif(tempExp.getType()==typeExpression.FLOAT):
                                     Environment.saveExpression("printf(\"%f\","+temp[0]+");")
                                     find = True
+                                elif(tempExp.getType()==typeExpression.CHAR):
+                                    Environment.saveExpression("printf(\"%c\","+temp[0]+");")
+                                    find = True
+                                elif(tempExp.getType()==typeExpression.BOOL):
+                                    if(tempExp.getValue() == True):
+                                        Environment.saveExpression("printf(\"%d\",(int)"+temp[0]+");")
+                                        find = True
+                                    else:
+                                        Environment.saveExpression("printf(\"%d\",(int)"+temp[0]+");")
+                                        find = True
+                                elif(tempExp.getType() == typeExpression.PSTRING or tempExp.getType() == typeExpression.STRING):
+                                    for e in tempExp.getValue():
+                                        Environment.saveExpression("printf(\"%c\","+str(ord(e))+");")
+                                    #archivo = open("Salida.txt", "a")
+                                    #archivo.write(str(tempExp.getValue())+"\n")
+                                    #archivo.close()   
                     if(find == False):
                         if(tempExp.getType()==typeExpression.INTEGER):
                             Environment.saveExpression("printf(\"%d\",(int)"+str(tempExp.getValue())+");")
                         elif(tempExp.getType()==typeExpression.FLOAT):
                             Environment.saveExpression("printf(\"%f\","+str(tempExp.getValue())+");")
+                        elif(tempExp.getType()==typeExpression.CHAR):
+                            Environment.saveExpression("printf(\"%c\","+str(ord(tempExp.getValue()))+");")
+                        elif(tempExp.getType()==typeExpression.BOOL):
+                            if(tempExp.getValue() == True):
+                                Environment.saveExpression("printf(\"%d\",(int)"+str(0)+");")
+                            else:
+                                Environment.saveExpression("printf(\"%d\",(int)"+str(1)+");")
+                        elif(tempExp.getType() == typeExpression.PSTRING or tempExp.getType() == typeExpression.STRING):
+                            for e in tempExp.getValue():
+                                Environment.saveExpression("printf(\"%c\","+str(ord(e))+");")
+                            #archivo = open("Salida.txt", "a")
+                            #archivo.write(str(tempExp.getValue())+"\n")
+                            #archivo.close()   
                     for j in range(i,len(formato.getValue())):
                         if(j != len(formato.getValue())):
                             if formato.getValue()[j] == "{" and formato.getValue()[j+1] == "}":
@@ -107,13 +137,7 @@ class Println(Instruction):
 
         else:
             tempExp = self.expression.execute(environment)
-            if(tempExp.getType() == typeExpression.PSTRING):
-                for e in tempExp.getValue():
-                    Environment.saveExpression("printf(\"%c\","+str(ord(e))+");")
-                #archivo = open("Salida.txt", "a")
-                #archivo.write(str(tempExp.getValue())+"\n")
-                #archivo.close()
-            elif(tempExp.getType() == typeExpression.STRING):
+            if(tempExp.getType() == typeExpression.PSTRING or tempExp.getType() == typeExpression.STRING):
                 for e in tempExp.getValue():
                     Environment.saveExpression("printf(\"%c\","+str(ord(e))+");")
                 #archivo = open("Salida.txt", "a")

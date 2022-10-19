@@ -64,11 +64,11 @@ class Declaration(Instruction):
                     #    elif tempValue.getId() != "":
                     #        Environment.saveDeclaration(self.id,tempValue.getId())
                     if(tempValue.getType() == typeExpression.INTEGER or tempValue.getType() == typeExpression.FLOAT):
-                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(Environment.getP()))
+                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(-100000))
                         Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+aux[1]+";")
                         Environment.saveDeclaration(self.id,aux[1],"P + "+str(Environment.getP()))
                     elif(tempValue.getType() == typeExpression.STRING or tempValue.getType() == typeExpression.PSTRING):
-                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(Environment.getP()))
+                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(-100000))
                         Environment.saveTemporal("H","","",0)
                         Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-2)+"] = t"+str(Environment.getContador()-1)+";")
                         Environment.saveExpression("heap[(int)H] = "+str(len(value.getValue()))+";")
@@ -77,6 +77,14 @@ class Declaration(Instruction):
                             Environment.saveExpression("heap[(int)H] = "+str(ord(v))+";")
                         Environment.saveExpression("H = H + 1;")
                         Environment.saveDeclaration(self.id,aux[1],"P + "+str(Environment.getP()))
+                    elif(tempValue.getType() == typeExpression.BOOL):
+                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(-100000))
+                        if(aux[1] == "True"):
+                            Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 1;")
+                            Environment.saveDeclaration(self.id,"1","P + "+str(Environment.getP()))
+                        else:
+                            Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 0;")
+                            Environment.saveDeclaration(self.id,"0","P + "+str(Environment.getP()))
                     environment.saveVariable(self.id, tempValue, self.type, self.fila, self.columna, self.isArray,self.mutable, False)
                     Environment.aumentarP()
                 else:
@@ -101,12 +109,12 @@ class Declaration(Instruction):
                     #    elif tempValue.getId() != "":
                     #        Environment.saveDeclaration(self.id,tempValue.getId())
                     if(tempValue.getType() == typeExpression.INTEGER or tempValue.getType() == typeExpression.FLOAT):
-                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(Environment.getP()))
+                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(-100000))
                         Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+aux[1]+";")
                         Environment.saveDeclaration(self.id,aux[1],"P + "+str(Environment.getP()))
                     elif(tempValue.getType() == typeExpression.STRING or tempValue.getType() == typeExpression.PSTRING):
-                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(Environment.getP()))
-                        Environment.saveTemporal("H","","",0)
+                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(-100000))
+                        Environment.saveTemporal("H","","",str(-100000))
                         Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-2)+"] = t"+str(Environment.getContador()-1)+";")
                         Environment.saveExpression("heap[(int)H] = "+str(len(value.getValue()))+";")
                         for v in value.getValue():
@@ -114,6 +122,14 @@ class Declaration(Instruction):
                             Environment.saveExpression("heap[(int)H] = "+str(ord(v))+";")
                         Environment.saveExpression("H = H + 1;")
                         Environment.saveDeclaration(self.id,aux[1],"P + "+str(Environment.getP()))
+                    elif(tempValue.getType() == typeExpression.BOOL):
+                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(-100000))
+                        if(aux[1] == "True"):
+                            Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 1;")
+                            Environment.saveDeclaration(self.id,"1","P + "+str(Environment.getP()))
+                        else:
+                            Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 0;")
+                            Environment.saveDeclaration(self.id,"0","P + "+str(Environment.getP()))
                     environment.saveVariable(self.id, value, tempValue.getType(), self.fila, self.columna, self.isArray,self.mutable, False)
                     Environment.aumentarP()
             else:

@@ -22,7 +22,16 @@ class CallFuncSt(Instruction):
         newEnvironment = Environment(environment.getGlobal())
         if(tempFunc != None):
             if self.parameters ==None and tempFunc.parameters==[]:
+                pointer =0
+                for temp in Environment.getTemporales():
+                    if(len(temp)==3):
+                        if(temp[0]=="void"):
+                            if(temp[1]==self.id):
+                                pointer = temp[2]
+                                break
+                Environment.saveTemporal("P + "+str(pointer), "", "", str(-100000))               
                 Environment.saveExpression(self.id+"();")
+                Environment.saveTemporal("P - "+str(pointer), "", "", str(-100000))  
                 #tran = tempFunc.executeFunction(environment)
                 #if tran!=None:
                 #    if(tran=="break"):

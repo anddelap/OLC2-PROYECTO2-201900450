@@ -14,10 +14,24 @@ class Logic(Expression):
     def execute(self, environment: Environment)->Symbol:
         #Resolvemos la expresion de la izquierda
         leftValue = self.leftExp.execute(environment)
+        #Environment.aumentarContadorL()
         #Obtenemos dominante
         if(self.rightExp == None):
            if (self.operation == logicOperation.NOT):
                 if(leftValue.getType()==typeExpression.BOOL):
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                    Environment.aumentarContadorL()
+                    Environment.saveExpression("t"+str(Environment.getContador())+" = 0;")
+                    Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                    Environment.aumentarContadorL()
+                    Environment.saveExpression("t"+str(Environment.getContador())+" = 1;")
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                    Environment.aumentarContadorL()
+                    Environment.saveExpression("if ( t"+str(Environment.getContador())+" == 1) goto L"+str(Environment.getEtiqueta())+";")
+                    Environment.saveTemporal("", "", "", 0)
+                    #Environment.aumentarContadorL()
+                    Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
                     return Symbol(
                         "",
                         not leftValue.getValue(),
@@ -34,25 +48,29 @@ class Logic(Expression):
         else:      
             #Resolvemos de la derecha
             #Environment.saveExpression("Hace Esto:")
-            print(str(Environment.getEtiqueta()))
-            Environment.saveExpression("L"+str(Environment.getEtiqueta()-2)+":")
+            #print(str(Environment.getEtiqueta()))
+            Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+            Environment.aumentarContadorL()
+            Environment.aumentarContadorL()
             rightValue = self.rightExp.execute(environment)
             if (self.operation == logicOperation.AND):
-                #print("En and"+str(rightValue.getType()))
-                #print("En and"+str(leftValue.getType()))
-                Environment.saveExpression("L"+str(Environment.getEtiqueta()-2)+":")
-                Environment.saveExpression("t"+str(Environment.getContador())+" = 1;")
-                Environment.saveExpression("goto L"+str(Environment.getEtiqueta())+";")
-                Environment.saveExpression("L"+str(Environment.getEtiqueta()-3)+":"+" L"+str(Environment.getEtiqueta()-1)+":")
-                Environment.saveExpression("t"+str(Environment.getContador())+" = 0;")
-                Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
-                Environment.aumentarContadorL()
-                Environment.saveExpression("if ( t"+str(Environment.getContador())+" == 1) goto L"+str(Environment.getEtiqueta())+";")
-                Environment.saveTemporal("", "", "", 0)
-                #Environment.aumentarContadorL()
-                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
-                #Environment.aumentarContadorL()
                 if(leftValue.getType() == typeExpression.BOOL and rightValue.getType() == typeExpression.BOOL):
+                    #print("En and"+str(rightValue.getType()))
+                    #print("En and"+str(leftValue.getType()))
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                    Environment.aumentarContadorL()
+                    Environment.saveExpression("t"+str(Environment.getContador())+" = 1;")
+                    Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta()-2)+":"+" L"+str(Environment.getEtiqueta())+":")
+                    Environment.aumentarContadorL()
+                    Environment.saveExpression("t"+str(Environment.getContador())+" = 0;")
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                    Environment.aumentarContadorL()
+                    Environment.saveExpression("if ( t"+str(Environment.getContador())+" == 1) goto L"+str(Environment.getEtiqueta())+";")
+                    Environment.saveTemporal("", "", "", 0)
+                    #Environment.aumentarContadorL()
+                    Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                    #Environment.aumentarContadorL()
                     return Symbol(
                         "",
                         leftValue.getValue() and rightValue.getValue(),
@@ -68,6 +86,21 @@ class Logic(Expression):
                     Environment.saveError("No es posible realizar la operacion and con "+ str(leftValue.getValue()) +" y " + str(rightValue.getValue()), 'Global', self.fila, self.columna)
             elif (self.operation == logicOperation.OR):
                 if(leftValue.getType() == typeExpression.BOOL and rightValue.getType() == typeExpression.BOOL):
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta()-2)+":"+" L"+str(Environment.getEtiqueta())+":")
+                    #Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                    Environment.aumentarContadorL()
+                    Environment.saveExpression("t"+str(Environment.getContador())+" = 1;")
+                    Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                    Environment.aumentarContadorL()
+                    Environment.saveExpression("t"+str(Environment.getContador())+" = 0;")
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                    Environment.aumentarContadorL()
+                    Environment.saveExpression("if ( t"+str(Environment.getContador())+" == 1) goto L"+str(Environment.getEtiqueta())+";")
+                    Environment.saveTemporal("", "", "", 0)
+                    #Environment.aumentarContadorL()
+                    Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                    #Environment.aumentarContadorL()
                     return Symbol(
                         "",
                         leftValue.getValue() or rightValue.getValue(),

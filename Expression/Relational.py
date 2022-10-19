@@ -60,8 +60,8 @@ class Relational(Expression):
                 Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
                 Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
                 # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
-                Environment.aumentarContadorL()
-                Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
                     value,
@@ -93,23 +93,77 @@ class Relational(Expression):
                 Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
                 Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
                 # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
-                Environment.aumentarContadorL()
-                Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
                     value,
                     typeExpression.BOOL,0,0
                 )
             elif(leftValue.getType()== typeExpression.INTEGER and rightValue.getType()== typeExpression.USIZE):
+                left = leftValue.getValue()
+                right = rightValue.getValue()
+                aux = [str(leftValue.getValue()) , ">" , str(rightValue.getValue())]
+
+                if(leftValue.getId() != ""):
+                    left = leftValue.getValue().getValue()
+                    aux[0] = leftValue.getId()
+                if(rightValue.getId() != ""):
+                    right = rightValue.getValue().getValue()
+                    aux[2] = rightValue.getId()
+                value = left > right
+                change = False
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(left) == int(temp[4]):
+                            aux[0] = temp[0]
+                            change = True
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(right) == int(temp[4]):
+                            aux[2] = temp[0]
+                            change = True
+                Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
-                    leftValue.getValue() > rightValue.getValue(),
+                    value,
                     typeExpression.BOOL,0,0
                 )
             elif(leftValue.getType()== typeExpression.USIZE and rightValue.getType()== typeExpression.INTEGER):
+                left = leftValue.getValue()
+                right = rightValue.getValue()
+                aux = [str(leftValue.getValue()) , ">" , str(rightValue.getValue())]
+
+                if(leftValue.getId() != ""):
+                    left = leftValue.getValue().getValue()
+                    aux[0] = leftValue.getId()
+                if(rightValue.getId() != ""):
+                    right = rightValue.getValue().getValue()
+                    aux[2] = rightValue.getId()
+                value = left > right
+                change = False
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(left) == int(temp[4]):
+                            aux[0] = temp[0]
+                            change = True
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(right) == int(temp[4]):
+                            aux[2] = temp[0]
+                            change = True
+                Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
-                    leftValue.getValue() > rightValue.getValue(),
+                    value,
                     typeExpression.BOOL,0,0
                 )
             else:
@@ -165,8 +219,8 @@ class Relational(Expression):
                 Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
                 Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
                 # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
-                Environment.aumentarContadorL()
-                Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
                     value,
@@ -198,23 +252,77 @@ class Relational(Expression):
                 Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
                 Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
                 # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
-                Environment.aumentarContadorL()
-                Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
                     value,
                     typeExpression.BOOL,0,0
                 )
             elif(leftValue.getType()== typeExpression.INTEGER and rightValue.getType()== typeExpression.USIZE):
+                left = leftValue.getValue()
+                right = rightValue.getValue()
+                aux = [str(leftValue.getValue()) , "<" , str(rightValue.getValue())]
+
+                if(leftValue.getId() != ""):
+                    left = leftValue.getValue().getValue()
+                    aux[0] = leftValue.getId()
+                if(rightValue.getId() != ""):
+                    right = rightValue.getValue().getValue()
+                    aux[2] = rightValue.getId()
+                value = left < right
+                change = False
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(left) == int(temp[4]):
+                            aux[0] = temp[0]
+                            change = True
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(right) == int(temp[4]):
+                            aux[2] = temp[0]
+                            change = True
+                Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
-                    leftValue.getValue() < rightValue.getValue(),
+                    value,
                     typeExpression.BOOL,0,0
                 )
             elif(leftValue.getType()== typeExpression.USIZE and rightValue.getType()== typeExpression.INTEGER):
+                left = leftValue.getValue()
+                right = rightValue.getValue()
+                aux = [str(leftValue.getValue()) , "<" , str(rightValue.getValue())]
+
+                if(leftValue.getId() != ""):
+                    left = leftValue.getValue().getValue()
+                    aux[0] = leftValue.getId()
+                if(rightValue.getId() != ""):
+                    right = rightValue.getValue().getValue()
+                    aux[2] = rightValue.getId()
+                value = left < right
+                change = False
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(left) == int(temp[4]):
+                            aux[0] = temp[0]
+                            change = True
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(right) == int(temp[4]):
+                            aux[2] = temp[0]
+                            change = True
+                Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
-                    leftValue.getValue() < rightValue.getValue(),
+                    value,
                     typeExpression.BOOL,0,0
                 )
             else:
@@ -270,8 +378,8 @@ class Relational(Expression):
                 Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
                 Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
                 # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
-                Environment.aumentarContadorL()
-                Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
                     value,
@@ -303,23 +411,77 @@ class Relational(Expression):
                 Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
                 Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
                 # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
-                Environment.aumentarContadorL()
-                Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
                     value,
                     typeExpression.BOOL,0,0
                 )
             elif(leftValue.getType()== typeExpression.INTEGER and rightValue.getType()== typeExpression.USIZE):
+                left = leftValue.getValue()
+                right = rightValue.getValue()
+                aux = [str(leftValue.getValue()) , ">=" , str(rightValue.getValue())]
+
+                if(leftValue.getId() != ""):
+                    left = leftValue.getValue().getValue()
+                    aux[0] = leftValue.getId()
+                if(rightValue.getId() != ""):
+                    right = rightValue.getValue().getValue()
+                    aux[2] = rightValue.getId()
+                value = left >= right
+                change = False
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(left) == int(temp[4]):
+                            aux[0] = temp[0]
+                            change = True
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(right) == int(temp[4]):
+                            aux[2] = temp[0]
+                            change = True
+                Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
-                    leftValue.getValue() >= rightValue.getValue(),
+                    value,
                     typeExpression.BOOL,0,0
                 )
             elif(leftValue.getType()== typeExpression.USIZE and rightValue.getType()== typeExpression.INTEGER):
+                left = leftValue.getValue()
+                right = rightValue.getValue()
+                aux = [str(leftValue.getValue()) , ">=" , str(rightValue.getValue())]
+
+                if(leftValue.getId() != ""):
+                    left = leftValue.getValue().getValue()
+                    aux[0] = leftValue.getId()
+                if(rightValue.getId() != ""):
+                    right = rightValue.getValue().getValue()
+                    aux[2] = rightValue.getId()
+                value = left >= right
+                change = False
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(left) == int(temp[4]):
+                            aux[0] = temp[0]
+                            change = True
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(right) == int(temp[4]):
+                            aux[2] = temp[0]
+                            change = True
+                Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
-                    leftValue.getValue() >= rightValue.getValue(),
+                    value,
                     typeExpression.BOOL,0,0
                 )
             else:
@@ -375,8 +537,8 @@ class Relational(Expression):
                 Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
                 Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
                 # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
-                Environment.aumentarContadorL()
-                Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
                     value,
@@ -408,23 +570,77 @@ class Relational(Expression):
                 Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
                 Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
                 # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
-                Environment.aumentarContadorL()
-                Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
                     value,
                     typeExpression.BOOL,0,0
                 )
             elif(leftValue.getType()== typeExpression.INTEGER and rightValue.getType()== typeExpression.USIZE):
+                left = leftValue.getValue()
+                right = rightValue.getValue()
+                aux = [str(leftValue.getValue()) , "<=" , str(rightValue.getValue())]
+
+                if(leftValue.getId() != ""):
+                    left = leftValue.getValue().getValue()
+                    aux[0] = leftValue.getId()
+                if(rightValue.getId() != ""):
+                    right = rightValue.getValue().getValue()
+                    aux[2] = rightValue.getId()
+                value = left <= right
+                change = False
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(left) == int(temp[4]):
+                            aux[0] = temp[0]
+                            change = True
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(right) == int(temp[4]):
+                            aux[2] = temp[0]
+                            change = True
+                Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
-                    leftValue.getValue() <= rightValue.getValue(),
+                    value,
                     typeExpression.BOOL,0,0
                 )
             elif(leftValue.getType()== typeExpression.USIZE and rightValue.getType()== typeExpression.INTEGER):
+                left = leftValue.getValue()
+                right = rightValue.getValue()
+                aux = [str(leftValue.getValue()) , "<=" , str(rightValue.getValue())]
+
+                if(leftValue.getId() != ""):
+                    left = leftValue.getValue().getValue()
+                    aux[0] = leftValue.getId()
+                if(rightValue.getId() != ""):
+                    right = rightValue.getValue().getValue()
+                    aux[2] = rightValue.getId()
+                value = left <= right
+                change = False
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(left) == int(temp[4]):
+                            aux[0] = temp[0]
+                            change = True
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(right) == int(temp[4]):
+                            aux[2] = temp[0]
+                            change = True
+                Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
-                    leftValue.getValue() <= rightValue.getValue(),
+                    value,
                     typeExpression.BOOL,0,0
                 )
             else:
@@ -480,8 +696,8 @@ class Relational(Expression):
                 Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
                 Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
                 # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
-                Environment.aumentarContadorL()
-                Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
                     value,
@@ -513,8 +729,8 @@ class Relational(Expression):
                 Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
                 Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
                 # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
-                Environment.aumentarContadorL()
-                Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
                     value,
@@ -545,15 +761,69 @@ class Relational(Expression):
                     typeExpression.BOOL,0,0
                 )
             elif(leftValue.getType()== typeExpression.INTEGER and rightValue.getType()== typeExpression.USIZE):
+                left = leftValue.getValue()
+                right = rightValue.getValue()
+                aux = [str(leftValue.getValue()) , "==" , str(rightValue.getValue())]
+
+                if(leftValue.getId() != ""):
+                    left = leftValue.getValue().getValue()
+                    aux[0] = leftValue.getId()
+                if(rightValue.getId() != ""):
+                    right = rightValue.getValue().getValue()
+                    aux[2] = rightValue.getId()
+                value = left == right
+                change = False
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(left) == int(temp[4]):
+                            aux[0] = temp[0]
+                            change = True
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(right) == int(temp[4]):
+                            aux[2] = temp[0]
+                            change = True
+                Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
-                    leftValue.getValue() == rightValue.getValue(),
+                    value,
                     typeExpression.BOOL,0,0
                 )
             elif(leftValue.getType()== typeExpression.USIZE and rightValue.getType()== typeExpression.INTEGER):
+                left = leftValue.getValue()
+                right = rightValue.getValue()
+                aux = [str(leftValue.getValue()) , "==" , str(rightValue.getValue())]
+
+                if(leftValue.getId() != ""):
+                    left = leftValue.getValue().getValue()
+                    aux[0] = leftValue.getId()
+                if(rightValue.getId() != ""):
+                    right = rightValue.getValue().getValue()
+                    aux[2] = rightValue.getId()
+                value = left == right
+                change = False
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(left) == int(temp[4]):
+                            aux[0] = temp[0]
+                            change = True
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(right) == int(temp[4]):
+                            aux[2] = temp[0]
+                            change = True
+                Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                #Environment.aumentarContadorL()
+                #Environment.aumentarContadorL()
                 return Symbol(
                     "",
-                    leftValue.getValue() == rightValue.getValue(),
+                    value,
                     typeExpression.BOOL,0,0
                 )
             else:
@@ -672,15 +942,67 @@ class Relational(Expression):
                     typeExpression.BOOL,0,0
                 )
             elif(leftValue.getType()== typeExpression.INTEGER and rightValue.getType()== typeExpression.USIZE):
+                left = leftValue.getValue()
+                right = rightValue.getValue()
+                aux = [str(leftValue.getValue()) , "!=" , str(rightValue.getValue())]
+
+                if(leftValue.getId() != ""):
+                    left = leftValue.getValue().getValue()
+                    aux[0] = leftValue.getId()
+                if(rightValue.getId() != ""):
+                    right = rightValue.getValue().getValue()
+                    aux[2] = rightValue.getId()
+                value = left != right
+                change = False
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(left) == int(temp[4]):
+                            aux[0] = temp[0]
+                            change = True
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(right) == int(temp[4]):
+                            aux[2] = temp[0]
+                            change = True
+                Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                
                 return Symbol(
                     "",
-                    leftValue.getValue() != rightValue.getValue(),
+                    value,
                     typeExpression.BOOL,0,0
                 )
             elif(leftValue.getType()== typeExpression.USIZE and rightValue.getType()== typeExpression.INTEGER):
+                left = leftValue.getValue()
+                right = rightValue.getValue()
+                aux = [str(leftValue.getValue()) , "!=" , str(rightValue.getValue())]
+
+                if(leftValue.getId() != ""):
+                    left = leftValue.getValue().getValue()
+                    aux[0] = leftValue.getId()
+                if(rightValue.getId() != ""):
+                    right = rightValue.getValue().getValue()
+                    aux[2] = rightValue.getId()
+                value = left != right
+                change = False
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(left) == int(temp[4]):
+                            aux[0] = temp[0]
+                            change = True
+                for temp in Environment.getTemporales():
+                    if len(temp) == 5:
+                        if int(right) == int(temp[4]):
+                            aux[2] = temp[0]
+                            change = True
+                Environment.saveExpression("if ("+str(aux[0])+" "+str(aux[1])+" "+str(aux[2])+") goto L"+str(Environment.getEtiqueta())+";")
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                # Environment.saveTemporal(aux[0], aux[1], aux[2], aux[3])
+                
                 return Symbol(
                     "",
-                    leftValue.getValue() != rightValue.getValue(),
+                    value,
                     typeExpression.BOOL,0,0
                 )
             else:

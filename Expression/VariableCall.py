@@ -28,6 +28,12 @@ class VariableCall(Expression):
                             pointer = temp[2]
                             break
             Environment.saveTemporal(pointer,"","",Environment.getP())
-            Environment.saveTemporal("stack[(int)t"+str(Environment.getContador()-1)+"]","","",retValue.getValue())
+            if(retValue.getType() == typeExpression.INTEGER or retValue.getType() == typeExpression.FLOAT):
+                Environment.saveTemporal("stack[(int)t"+str(Environment.getContador()-1)+"]","","",retValue.getValue())
+            elif(retValue.getType() == typeExpression.BOOL):
+                if(retValue.getValue() == True):
+                    Environment.saveTemporal("stack[(int)t"+str(Environment.getContador()-1)+"]","","",1)
+                else:
+                    Environment.saveTemporal("stack[(int)t"+str(Environment.getContador()-1)+"]","","",0)
             #Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+aux[1]+";")    
             return retValue

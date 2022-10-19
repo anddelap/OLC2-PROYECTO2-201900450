@@ -18,9 +18,7 @@ class If(Instruction):
         self.transfer = False
 
     def execute(self, environment: Environment):
-        Environment.saveExpression("Entra:")
         tempCondition: Symbol = self.condition.execute(environment)
-        Environment.saveExpression("Sale:")
         count = copy.deepcopy(Environment.getEtiqueta())
         #Environment.aumentarContadorL()
         #Environment.aumentarContadorL()
@@ -73,7 +71,7 @@ class If(Instruction):
                         except:
                             return tran 
             else:
-                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+2)+";")  
+                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")  
                 Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
                 Environment.aumentarContadorL()
                 for ins in self.elseBlock:
@@ -97,8 +95,8 @@ class If(Instruction):
                                 return tran.execute(newEnv)
                             except:
                                 return tran
-                Environment.aumentarContadorL()
                 Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
+                Environment.aumentarContadorL()
                 #Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+2)+";")
         #else:
             #Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+2)+";")

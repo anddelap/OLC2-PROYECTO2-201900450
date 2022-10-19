@@ -15,7 +15,7 @@ class Assignment(Instruction):
     def execute(self, environment: Environment):
         newValue = self.value.execute(environment)
         if(self.indexArray == None):
-            if(isinstance(self.id, list)):
+            if(isinstance(self.id, list)): #Asignacion en Struct
                 asig = self.id[0].execute(environment)
                 if(asig != None):
                     #print(self.id[0])
@@ -57,7 +57,7 @@ class Assignment(Instruction):
                     #archivo.write("Error: la variable " + id + " no puede ser cambiada de tipo\n")
                     #archivo.close()
                     Environment.saveError("Error: la variable " + id + " no existe", 'Local', self.fila, self.columna)
-            else:
+            else: #Asignacion en otro tipo de variable
                 asig = environment.getVariable(self.id)
                 #print(asig.getId())
                 if(asig==None):
@@ -89,8 +89,8 @@ class Assignment(Instruction):
                                     if(temp[0] == self.id):
                                         pointer = temp[2]
                                         break
-                        Environment.saveTemporal(pointer,"","",Environment.getP())
-                        Environment.saveTemporal("H","","",0)
+                        Environment.saveTemporal(pointer,"","",str(-100000))
+                        Environment.saveTemporal("H","","",str(-100000))
                         Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-2)+"] = t"+str(Environment.getContador()-1)+";")
                         Environment.saveExpression("heap[(int)H] = "+str(len(value.getValue()))+";")
                         for v in value.getValue():
@@ -116,10 +116,34 @@ class Assignment(Instruction):
                                     if(temp[0] == self.id):
                                         pointer = temp[2]
                                         break
-                        Environment.saveTemporal(pointer,"","",Environment.getP())
-                        Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+aux[1]+";")     
+                        Environment.saveTemporal(pointer,"","",str(-100000))
+                        Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+aux[1]+";") 
+                    elif(asig.getType()==typeExpression.BOOL):
+                        aux = [self.id,str(newValue.getValue())]
+                        #value = newValue
+                        #if(newValue.getId() != ""):
+                        #    value = newValue.getValue()
+                        #    aux[1] = newValue.getId()
+                        #for temp in Environment.getTemporales():
+                        #    #print(len(temp))
+                        #    if(len(temp) == 5):
+                        #        if str(value.getValue()) == temp[4]:
+                        #           aux[1] = temp[0]
+                        #           asignacion = True
+                        pointer=""
+                        for temp in Environment.getTemporales(): 
+                            if(isinstance(temp, list)):
+                                if(len(temp) == 3):
+                                    if(temp[0] == self.id):
+                                        pointer = temp[2]
+                                        break
+                        Environment.saveTemporal(pointer,"","",str(-100000))
+                        if(newValue.getValue() == True):
+                            Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 1;")
+                        else:
+                            Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 0;") 
                     environment.alterVariable(self.id, value, self.fila, self.columna)
-        else:
+        else: #Asignacion de arreglo por posicion
                 List = environment.getVariable(self.id)
                 todosInt = False
                 if(List.getType() == typeExpression.ARRAY or List.getType() == typeExpression.VECTOR):

@@ -17,7 +17,7 @@ def compilar():
             env.simbolos=[]
             env.errores=[]
             env.contador=0
-            env.contadorL=0
+            env.contadorL=1
             env.temporales=[]
             codigo = request.form["entrada"]
             g.codigo=codigo
@@ -59,6 +59,9 @@ def compilar():
                             data.append(temp[0]+" = "+temp[1]+" "+temp[2]+" "+temp[3]+";\n")
                     elif(len(temp)==2):
                         data.append(temp[0]+" = "+temp[1]+";\n")
+                    elif(len(temp)==3 and temp[0]=="void"):
+                        
+                        data.append(temp[0]+" "+temp[1]+"(){\n")
                 else:
                     data.append(temp+"\n")
             #data.append("return 0;\n")

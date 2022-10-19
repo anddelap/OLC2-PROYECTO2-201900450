@@ -12,7 +12,7 @@ heap = []
 P = 0
 H = 0
 contador = 0
-contadorL = 0
+contadorL = 1
 class Environment:
     def __init__(self,father):
         #Usamos un dicionario para nuestra tabla de simbolos, guardara el id como clave y como cuerpo el simbolo

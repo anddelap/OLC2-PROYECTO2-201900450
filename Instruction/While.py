@@ -17,9 +17,40 @@ class While(Instruction):
 
     def execute(self, environment: Environment):
         transfer = ""
+        position = len(Environment.getTemporales())-1
         tempCondition: Symbol = self.condition.execute(environment)
         if tempCondition.type == typeExpression.BOOL:
-            while(tempCondition.getValue() == True):
+            Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+            Environment.aumentarContadorL()
+            newEnv = Environment(environment)
+            for ins in self.block:
+                    tran = ins.execute(newEnv)
+                    tipo = str(type(ins))
+                    if tipo == "<class 'Expression.transSen.transSen'>":
+                        if(ins.type==trasnferSen.BREAK):
+                                transfer = "break"
+                        elif(ins.type==trasnferSen.CONTINUE):
+                                transfer = "continue"
+                        elif(ins.type==trasnferSen.RETURN):
+                                return  ins.value.execute(newEnv)
+                    if(tran != None):
+                        if(tran == "break"):
+                            transfer =  "break"
+                        elif(tran == "continue"):
+                            transfer = "continue"
+                        else:
+                            try:
+                                return tran.execute(newEnv)
+                            except:
+                                return tran 
+            
+            Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
+            Environment.aumentarContadorL()
+            position2 = len(Environment.getTemporales())
+            Environment.getTemporales().insert(position,"L"+str(Environment.getEtiqueta())+":")
+            Environment.getTemporales().insert(position2,"goto L"+str(Environment.getEtiqueta())+";")
+            #print(Environment.getEtiqueta())
+            """ while(tempCondition.getValue() == True):
                 newEnv = Environment(environment)
                 for ins in self.block:
                     tran = ins.execute(newEnv)
@@ -45,7 +76,7 @@ class While(Instruction):
                 if(transfer == "break"):
                     break
                 elif(transfer == "continue"):
-                    continue     
+                    continue      """
                 #tempCondition = self.condition.execute(environment) 
         else:
             ruta = "Salida.txt"
