@@ -23,32 +23,40 @@ class While(Instruction):
             Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
             Environment.aumentarContadorL()
             newEnv = Environment(environment)
+            positionBreak = 0
+            positionContinue = 0
             for ins in self.block:
-                    tran = ins.execute(newEnv)
-                    tipo = str(type(ins))
-                    if tipo == "<class 'Expression.transSen.transSen'>":
-                        if(ins.type==trasnferSen.BREAK):
-                                transfer = "break"
-                        elif(ins.type==trasnferSen.CONTINUE):
-                                transfer = "continue"
-                        elif(ins.type==trasnferSen.RETURN):
-                                return  ins.value.execute(newEnv)
-                    if(tran != None):
-                        if(tran == "break"):
-                            transfer =  "break"
-                        elif(tran == "continue"):
+                tran = ins.execute(newEnv)
+                tipo = str(type(ins))
+                if tipo == "<class 'Expression.transSen.transSen'>":
+                    if(ins.type==trasnferSen.BREAK):
+                            positionBreak =  len(Environment.getTemporales())-1
+                            transfer = "break"
+                    elif(ins.type==trasnferSen.CONTINUE):
+                            positionContinue =  len(Environment.getTemporales())-1
                             transfer = "continue"
-                        else:
-                            try:
-                                return tran.execute(newEnv)
-                            except:
-                                return tran 
-            
+                    elif(ins.type==trasnferSen.RETURN):
+                            return  ins.value.execute(newEnv)
+                if(tran != None):
+                    if(tran == "break"):
+                        transfer =  "break"
+                    elif(tran == "continue"):
+                        transfer = "continue"
+                    else:
+                        try:
+                            return tran.execute(newEnv)
+                        except:
+                            return tran 
             Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
             Environment.aumentarContadorL()
             position2 = len(Environment.getTemporales())
+
             Environment.getTemporales().insert(position,"L"+str(Environment.getEtiqueta())+":")
             Environment.getTemporales().insert(position2,"goto L"+str(Environment.getEtiqueta())+";")
+
+            if(transfer == "continue"):
+                Environment.getTemporales().insert(positionContinue,"goto L"+str(Environment.getEtiqueta())+";")
+
             #print(Environment.getEtiqueta())
             """ while(tempCondition.getValue() == True):
                 newEnv = Environment(environment)

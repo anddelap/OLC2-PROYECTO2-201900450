@@ -23,8 +23,75 @@ class For(Instruction):
                 rightValue = self.rightExp.execute(environment)
                 if(leftValue.getType()==typeExpression.INTEGER and rightValue.getType()==typeExpression.INTEGER):
                     tempSy = Symbol("",0,leftValue.type,0,0)
-                    #========== For de intervalo ==========               
-                    for i in range(leftValue.getValue(),rightValue.getValue()):
+                    #========== For de intervalo ==========
+                    position = len(Environment.getTemporales())-1
+                    newEnv = Environment(environment)
+                    aux = [self.id1,str(leftValue.getValue())]
+                    asignacion = False
+                    value = leftValue
+                    if(leftValue.getId() != ""):
+                        value = leftValue.getValue()
+                        aux[1] = leftValue.getId()
+                    for temp in Environment.getTemporales():
+                        #print(len(temp))
+                        if(len(temp) == 5):
+                            if str(value.getValue()) == temp[4]:
+                                aux[1] = temp[0]
+                                asignacion = True
+                    Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(-100000))
+                    Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+aux[1]+";")
+                    Environment.saveDeclaration(self.id1,aux[1],"P + "+str(Environment.getP()))
+                    newEnv.saveVariable(self.id1, tempSy, typeExpression.INTEGER,0,0,False,True, True)     
+            
+                    pointer=""
+                    for temp in Environment.getTemporales(): 
+                        if(isinstance(temp, list)):
+                            if(len(temp) == 3):
+                                if(temp[0] == self.id1):
+                                    pointer = temp[2]
+                                    break
+                    
+                    left = leftValue.getValue()
+                    right = rightValue.getValue()
+                    aux2 = [str(leftValue.getValue()),str(rightValue.getValue())]
+                    if(leftValue.getId() != ""):
+                        left = int(leftValue.getValue().getValue())
+                        aux2[0] = leftValue.getId()
+                    if(rightValue.getId() != ""):
+                        right = int(rightValue.getValue().getValue())
+                        aux2[2] = rightValue.getId()
+                    #value = left + right
+                    #aux2[3] = str(value)
+                    change = False
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if int(left) == int(temp[4]):
+                                aux2[0] = temp[0]
+                                change = True
+                    for temp in Environment.getTemporales():
+                        if len(temp) == 5:
+                            if int(right) == int(temp[4]):
+                                aux2[2] = temp[0]
+                                change = True
+
+                    Environment.saveTemporal(pointer,"","",Environment.getP())
+                    Environment.saveTemporal("stack[(int)t"+str(Environment.getContador()-1)+"]","","",leftValue.getValue())
+                    Environment.saveExpression("if (t"+str(Environment.getContador()-1)+" > "+str(aux2[0])+") goto L"+str(Environment.getEtiqueta())+";")
+                    Environment.saveExpression("if (t"+str(Environment.getContador()-1)+" < "+str(aux2[1])+") goto L"+str(Environment.getEtiqueta())+";")
+                    Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                    Environment.aumentarContadorL()
+                    for ins in self.block:
+                            #ins.execute(newEnv)
+                            tran = ins.execute(newEnv)
+                    
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
+                    Environment.aumentarContadorL()
+                    position2 = len(Environment.getTemporales())
+                    
+                    Environment.getTemporales().insert(position,"L"+str(Environment.getEtiqueta())+":")
+                    Environment.getTemporales().insert(position2,"goto L"+str(Environment.getEtiqueta())+";")
+                    """ for i in range(leftValue.getValue(),rightValue.getValue()):
                         newEnv = Environment(environment)
                         newEnv.saveVariable(self.id1, tempSy, typeExpression.INTEGER,0,0,False,True, True)  
                         transfer=""
@@ -54,7 +121,7 @@ class For(Instruction):
                         if(transfer == "break"):
                             break
                         elif(transfer == "continue"):
-                            continue      
+                            continue  """     
                 else:
                     ruta = "Salida.txt"
                     archivo = open(ruta, "a")

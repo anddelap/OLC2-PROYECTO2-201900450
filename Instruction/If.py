@@ -32,21 +32,22 @@ class If(Instruction):
             tipo = str(type(ins))
             if tipo == "<class 'Expression.transSen.transSen'>":
                 if(ins.type==trasnferSen.BREAK):
-                    return "break"
+                    
+                    """ return "break" """
                 elif(ins.type==trasnferSen.CONTINUE):
-                    return "continue"
+                    """ return "continue" """
                 elif(ins.type==trasnferSen.RETURN):
                     return  ins.value
             if(tran != None):
                 if(tran == "break"):
-                    return "break"
+                    """ return "break" """
                 elif(tran == "continue"):
-                    return "continue"  
+                    """ return "continue" """  
                 else:
                     try:
-                        return tran.execute(newEnv)
+                        """ return tran.execute(newEnv) """
                     except:
-                        return tran  
+                        """ return tran """
         if(self.elseBlock!=None):
             newEnv = Environment(environment)
             ins = str(type(self.elseBlock))
