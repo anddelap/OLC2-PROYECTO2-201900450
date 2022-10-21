@@ -27,7 +27,7 @@ class VariableCall(Expression):
                         if(temp[0] == self.id):
                             pointer = temp[2]
                             break
-            Environment.saveTemporal(pointer,"","",Environment.getP())
+            Environment.saveTemporal(pointer,"","",str(-100000))
             if(retValue.getType() == typeExpression.INTEGER or retValue.getType() == typeExpression.FLOAT):
                 Environment.saveTemporal("stack[(int)t"+str(Environment.getContador()-1)+"]","","",retValue.getValue())
             elif(retValue.getType() == typeExpression.BOOL):

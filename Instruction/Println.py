@@ -20,13 +20,19 @@ class Println(Instruction):
             if cantllaves == cantExps:
                 i = 0
                 exps = []
+                # Falta imprmir el primer string
+                for char in formato.getValue():
+                    Environment.saveExpression("printf(\"%c\","+str(ord(char))+");")
                 for expression in range(1,len(self.expression)):
                     tempExp = self.expression[expression].execute(environment)
                     find = False
+                    aux = ""
                     for temp in Environment.getTemporales():
                         if len(temp) == 5:
                             if (str(tempExp.getValue()) == str(temp[4])):
-                                if(tempExp.getType()==typeExpression.INTEGER):
+                                aux=temp[0]
+                                find = True
+                                """ if(tempExp.getType()==typeExpression.INTEGER):
                                     Environment.saveExpression("printf(\"%d\",(int)"+temp[0]+");")
                                     find = True
                                 elif(tempExp.getType()==typeExpression.FLOAT):
@@ -47,7 +53,7 @@ class Println(Instruction):
                                         Environment.saveExpression("printf(\"%c\","+str(ord(e))+");")
                                     #archivo = open("Salida.txt", "a")
                                     #archivo.write(str(tempExp.getValue())+"\n")
-                                    #archivo.close()   
+                                    #archivo.close()  """  
                     if(find == False):
                         if(tempExp.getType()==typeExpression.INTEGER):
                             Environment.saveExpression("printf(\"%d\",(int)"+str(tempExp.getValue())+");")
@@ -65,7 +71,30 @@ class Println(Instruction):
                                 Environment.saveExpression("printf(\"%c\","+str(ord(e))+");")
                             #archivo = open("Salida.txt", "a")
                             #archivo.write(str(tempExp.getValue())+"\n")
-                            #archivo.close()   
+                            #archivo.close() 
+                    else:  
+                        if(tempExp.getType()==typeExpression.INTEGER):
+                            Environment.saveExpression("printf(\"%d\",(int)"+aux+");")
+                            find = True
+                        elif(tempExp.getType()==typeExpression.FLOAT):
+                            Environment.saveExpression("printf(\"%f\","+aux+");")
+                            find = True
+                        elif(tempExp.getType()==typeExpression.CHAR):
+                            Environment.saveExpression("printf(\"%c\","+aux+");")
+                            find = True
+                        elif(tempExp.getType()==typeExpression.BOOL):
+                            if(tempExp.getValue() == True):
+                                Environment.saveExpression("printf(\"%d\",(int)"+aux+");")
+                                find = True
+                            else:
+                                Environment.saveExpression("printf(\"%d\",(int)"+aux+");")
+                                find = True
+                        elif(tempExp.getType() == typeExpression.PSTRING or tempExp.getType() == typeExpression.STRING):
+                            for e in tempExp.getValue():
+                                Environment.saveExpression("printf(\"%c\","+str(ord(e))+");")
+                            #archivo = open("Salida.txt", "a")
+                            #archivo.write(str(tempExp.getValue())+"\n")
+                            #archivo.close() 
                     for j in range(i,len(formato.getValue())):
                         if(j != len(formato.getValue())):
                             if formato.getValue()[j] == "{" and formato.getValue()[j+1] == "}":

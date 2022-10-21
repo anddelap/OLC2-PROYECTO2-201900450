@@ -3,7 +3,7 @@ float stack[100000];
 float heap[100000]; 
 float P; 
 float H;
-float t0,t1,t2,t3;
+float t0,t1,t2,t3,t4,t5;
 P = 0;
 
 
@@ -11,20 +11,13 @@ P = 0;
 int main(){
 H = 0;
 
-t0 = P + 1;
-stack[(int)t0] = 9;
-L3:
-t1 = P + 2;
-stack[(int)t1] = 2;
-t2 = P + 2;
-t3 = stack[(int)t2];
-if (t3 > 2) goto L1;
-if (t3 < 9) goto L1;
-goto L2;
-L1:
-printf("%c",97);
-goto L3;
-L2:
+t0 = 5 + 6;
+t1 = t0 + 2;
+t2 = t1 * t1;
+t3 = t2 * t1;
+t4 = t3 * t1;
+t5 = P + 1;
+stack[(int)t5] = t4;
 
 
 return 0;

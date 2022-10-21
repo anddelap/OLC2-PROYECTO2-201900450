@@ -500,9 +500,33 @@ class Arithmetic(Expression):
                     Environment.saveError("No es realizar la potencia con "+ str(leftValue.getValue()) + " y "+ str(rightValue.getValue()), 'Local', self.fila, self.columna)
                 elif(dominant == typeExpression.INTEGER):
                     if (self.PotType == "i64"):
-                        # Revisar como es se hace potencia en C3D
-                        #print( str(leftValue.getValue()) + "^" + str(rightValue.getValue()),str(int(leftValue.getValue()) ** int(rightValue.getValue())))
-                        #Environment.saveTemporal(str(leftValue.getValue()) , "^" , str(rightValue.getValue()),str(int(leftValue.getValue()) ** int(rightValue.getValue())))
+                        find = False
+                        left = leftValue.getValue()
+                        right = rightValue.getValue()
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if (str(leftValue.getValue()) == str(temp[4])):
+                                    aux=temp[0]
+                                    find = True
+                        if find:
+                            Environment.saveTemporal(aux , "*" , aux,str(int(leftValue.getValue()) * int(leftValue.getValue())))
+                        else:
+                            Environment.saveTemporal(str(leftValue.getValue()) , "*" , str(leftValue.getValue()),str(int(leftValue.getValue()) * int(leftValue.getValue())))
+                        position = len(Environment.getTemporales()) - 1
+                        for i in range(0, int(right)-2):
+                            find = False
+                            aux = ""
+                            for temp in Environment.getTemporales():
+                                if len(temp) == 5:
+                                    if (str(leftValue.getValue()) == str(temp[4])):
+                                        aux=temp[0]
+                                        find = True
+                            if find:
+                                Environment.saveTemporal(Environment.getTemporales()[position][0] , "*" , aux,str(int(Environment.getTemporales()[position][4]) * int(leftValue.getValue())))
+                                position += 1
+                            else:
+                                Environment.saveTemporal(Environment.getTemporales()[position][0] , "*" , str(leftValue.getValue()),str(int(Environment.getTemporales()[position][4]) * int(leftValue.getValue())))
+                                position += 1
                         return Symbol(
                             "",
                             int(leftValue.getValue()) ** int(rightValue.getValue()),
