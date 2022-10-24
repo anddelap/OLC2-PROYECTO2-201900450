@@ -19,12 +19,12 @@ class CallFuncSt(Instruction):
         self.columna = columna
     def execute(self, environment: Environment):
         tempFunc: Function = environment.getFunction(self.id, self.fila, self.columna)
-        newEnvironment = Environment(environment.getGlobal())
+        newEnvironment = Environment(environment)
         if(tempFunc != None):
             if self.parameters ==None and tempFunc.parameters==[]:
                 pointer =0
                 for temp in Environment.getTemporales():
-                    if(len(temp)==3):
+                    if(len(temp)==4):
                         if(temp[0]=="void"):
                             if(temp[1]==self.id):
                                 pointer = temp[2]
@@ -42,7 +42,47 @@ class CallFuncSt(Instruction):
                 #        return tran
             else:
                 if(len(tempFunc.parameters)==len(self.parameters)):
+                    pointer = 0
+                    parameters = []
+                    for temp in Environment.getTemporales():
+                        if(len(temp)==4):
+                            if(temp[0]=="void"):
+                                if(temp[1]==self.id):
+                                    pointer = temp[2]
+                                    parameters= temp[3]
+                                    break
+                    arrayParameter = []
+                    for i in range(0,len(self.parameters)):
+                        pam = self.parameters[i].execute(newEnvironment)
+                        arrayParameter.append(pam)
+                        parameters[i][1] = pam.getValue()
+                    Environment.saveTemporal("P + "+str(pointer), "", "", str(-100000))  
+                    #print(arrayParameter)
+                    for i in range(0,len(parameters)):
+                        aux = parameters[i][1]
+                        for temp in Environment.getTemporales():
+                            if(len(temp) == 5):
+                                if str(parameters[i][1]) == str(temp[4]):
+                                    aux = temp[0]
+                        Environment.saveTemporal(parameters[i][2], "", "", str(-100000)) 
+                        if(arrayParameter[i].getType() == typeExpression.INTEGER or arrayParameter[i].getType() == typeExpression.FLOAT):
+                            Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+str(aux)+";")
+                        elif (arrayParameter[i].getType()==typeExpression.STRING or arrayParameter[i].getType()==typeExpression.PSTRING):
+                            Environment.saveTemporal("H","","",str(-100000))
+                            Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-2)+"] = t"+str(Environment.getContador()-1)+";")
+                            Environment.saveExpression("heap[(int)H] = "+str(len(aux))+";")
+                            for v in aux:
+                                Environment.saveExpression("H = H + 1;")
+                                Environment.saveExpression("heap[(int)H] = "+str(ord(v))+";")
+                            Environment.saveExpression("H = H + 1;")
+                        elif(arrayParameter[i].getType()==typeExpression.BOOL):
+                            if(aux == True):
+                                Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 1;")
+                            else:
+                                Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 0;") 
                     Environment.saveExpression(self.id+"();")
+                    Environment.saveTemporal("P - "+str(pointer), "", "", str(-100000))  
+                    
                     #for x in range(0,len(tempFunc.parameters)):
                     #    tempPar: Parameter = tempFunc.parameters[x]
                         
@@ -63,4 +103,4 @@ class CallFuncSt(Instruction):
                     #archivo = open("Errores/Errores.txt", "a")
                     #archivo.write("Error: la funcion "+ str(self.id) + " requiere "+ str(len(tempFunc.parameters))+" parametros\n")
                     #archivo.close()
-                    Environment.saveError("Error: La función " + id + " no existe", 'Local', self.fila, self.columna)
+                    Environment.saveError("Error: la funcion "+ str(self.id) + " requiere "+ str(len(tempFunc.parameters))+" parametros", 'Local', self.fila, self.columna)

@@ -24,12 +24,15 @@ class Function(Instruction):
         else:
             environment.saveFunction(self.id,self,self.fila,self.columna)
             Environment.restartPointer()
-            #for parameter in self.parameters:
-            #    parameter.execute(environment)
+            array = []
+            for parameter in self.parameters:
+                parameter.execute(newEnv,array)
             #Environment.saveExpression("void " + self.id + "(){")
-            position=len(Environment.getTemporales())-1
-            Environment.saveExpression(["void",self.id,Environment.getP()])
+            position=len(Environment.getTemporales())
+            #Environment.saveExpression(["void",self.id,Environment.getP(),array])
             #    parameter.execute(environment)
+            Environment.saveExpression(["void",self.id,Environment.getP(),array])
+            print(Environment.getP())
             for ins in self.block:
                 tran = ins.execute(newEnv)
                 tipo = str(type(ins))
@@ -157,7 +160,11 @@ class Function(Instruction):
                                 #archivo.close()
                                 Environment.saveError("Error: La funcion no puede retornar",'Local', self.fila, self.columna)
             #Environment.saveExpression("return;")
-            Environment.getTemporales().insert(position,["void ",self.id,Environment.getP()])
+            print(Environment.getP())
+            print(Environment.getTemporales()[position])
+            Environment.getTemporales()[position][2] = Environment.getP()
+            print(Environment.getTemporales()[position])
+            #Environment.getTemporales().insert(position,["void",self.id,Environment.getP(),array])
             Environment.saveExpression("}")
 
     def executeFunction(self, environment: Environment):

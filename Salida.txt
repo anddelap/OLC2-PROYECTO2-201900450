@@ -3,7 +3,14 @@ float stack[100000];
 float heap[100000]; 
 float P; 
 float H;
-float t0,t1,t2,t3,t4,t5;
+No es posible sumar 1 y cadena
+Error: la variable x no existe
+Error: Condicion de if debe de ser de tipo booleana.
+Error: La función parametros_invalidos no existe
+Error: La variable variable1 ya existe
+Error: la variable prueba_tipo no puede ser cambiada de tipo
+Error: La variable no_mutable no es mutable
+float t0,t1,t2,t3,t4,t5,t6;
 P = 0;
 
 
@@ -11,13 +18,42 @@ P = 0;
 int main(){
 H = 0;
 
-t0 = 5 + 6;
-t1 = t0 + 2;
-t2 = t1 * t1;
-t3 = t2 * t1;
-t4 = t3 * t1;
-t5 = P + 1;
-stack[(int)t5] = t4;
+printf("%c",123);
+printf("%c",125);
+printf("%d",(int)0);
+printf("%c",123);
+printf("%c",125);
+printf("%d",(int)0);
+t0 = 3 * 6;
+t1 = t0 + 7;
+L1:
+if (5 < 6) goto L2;
+goto L3;
+L2:
+L3:
+t2 = P + 1;
+stack[(int)t2] = 23;
+t3 = P + 2;
+stack[(int)t3] = 23.98;
+t4 = P + 3;
+t5 = H;
+stack[(int)t4] = t5;
+heap[(int)H] = 6;
+H = H + 1;
+heap[(int)H] = 67;
+H = H + 1;
+heap[(int)H] = 97;
+H = H + 1;
+heap[(int)H] = 100;
+H = H + 1;
+heap[(int)H] = 101;
+H = H + 1;
+heap[(int)H] = 110;
+H = H + 1;
+heap[(int)H] = 97;
+H = H + 1;
+t6 = P + 4;
+stack[(int)t6] = 7;
 
 
 return 0;

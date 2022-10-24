@@ -25,59 +25,35 @@ class If(Instruction):
         Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
         Environment.aumentarContadorL()
         newEnv = Environment(environment)
-        for ins in self.block:
-            #ins.execute(newEnv)
-            #Environment.aumentarContadorL()
-            tran = ins.execute(newEnv)
-            tipo = str(type(ins))
-            if tipo == "<class 'Expression.transSen.transSen'>":
-                if(ins.type==trasnferSen.BREAK):
-                    
-                    """ return "break" """
-                elif(ins.type==trasnferSen.CONTINUE):
-                    """ return "continue" """
-                elif(ins.type==trasnferSen.RETURN):
-                    return  ins.value
-            if(tran != None):
-                if(tran == "break"):
-                    """ return "break" """
-                elif(tran == "continue"):
-                    """ return "continue" """  
-                else:
-                    try:
-                        """ return tran.execute(newEnv) """
-                    except:
-                        """ return tran """
-        if(self.elseBlock!=None):
-            newEnv = Environment(environment)
-            ins = str(type(self.elseBlock))
-            if ins == "<class 'Instruction.If.If'>":
-                tran = self.elseBlock.execute(environment)
+        if tempCondition.type == typeExpression.BOOL:
+            for ins in self.block:
+                #ins.execute(newEnv)
+                #Environment.aumentarContadorL()
+                tran = ins.execute(newEnv)
                 tipo = str(type(ins))
                 if tipo == "<class 'Expression.transSen.transSen'>":
                     if(ins.type==trasnferSen.BREAK):
-                        return "break"
+                        
+                        """ return "break" """
                     elif(ins.type==trasnferSen.CONTINUE):
-                        return "continue"
+                        """ return "continue" """
                     elif(ins.type==trasnferSen.RETURN):
-                        return  ins.value.execute(newEnv)
-                elif(tran != None):
+                        return  ins.value
+                if(tran != None):
                     if(tran == "break"):
-                        return "break"
+                        """ return "break" """
                     elif(tran == "continue"):
-                        return "continue"  
+                        """ return "continue" """  
                     else:
                         try:
-                            return tran.execute(newEnv)
+                            """ return tran.execute(newEnv) """
                         except:
-                            return tran 
-            else:
-                Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")  
-                Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
-                Environment.aumentarContadorL()
-                for ins in self.elseBlock:
-                    #ins.execute(newEnv)
-                    tran = ins.execute(newEnv)
+                            """ return tran """
+            if(self.elseBlock!=None):
+                newEnv = Environment(environment)
+                ins = str(type(self.elseBlock))
+                if ins == "<class 'Instruction.If.If'>":
+                    tran = self.elseBlock.execute(environment)
                     tipo = str(type(ins))
                     if tipo == "<class 'Expression.transSen.transSen'>":
                         if(ins.type==trasnferSen.BREAK):
@@ -95,15 +71,49 @@ class If(Instruction):
                             try:
                                 return tran.execute(newEnv)
                             except:
-                                return tran
+                                return tran 
+                else:
+                    Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")  
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
+                    Environment.aumentarContadorL()
+                    for ins in self.elseBlock:
+                        #ins.execute(newEnv)
+                        tran = ins.execute(newEnv)
+                        tipo = str(type(ins))
+                        if tipo == "<class 'Expression.transSen.transSen'>":
+                            if(ins.type==trasnferSen.BREAK):
+                                return "break"
+                            elif(ins.type==trasnferSen.CONTINUE):
+                                return "continue"
+                            elif(ins.type==trasnferSen.RETURN):
+                                return  ins.value.execute(newEnv)
+                        elif(tran != None):
+                            if(tran == "break"):
+                                return "break"
+                            elif(tran == "continue"):
+                                return "continue"  
+                            else:
+                                try:
+                                    return tran.execute(newEnv)
+                                except:
+                                    return tran
+                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
+                    Environment.aumentarContadorL()
+                    #Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+2)+";")
+            #else:
+                #Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+2)+";")
+            else:
                 Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
                 Environment.aumentarContadorL()
-                #Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+2)+";")
-        #else:
-            #Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+2)+";")
         else:
-            Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
-            Environment.aumentarContadorL()
+            ruta = "Salida.txt"
+            archivo = open(ruta, "a")
+            archivo.write("Error: Condicion de if debe de ser de tipo booleana.\n")
+            archivo.close()
+            #archivo = open("Errores/Errores.txt", "a")
+            #archivo.write("Error: Condicion no valida.  \n")
+            #archivo.close()
+            Environment.saveError("Error: Condicion de if debe de ser de tipo booleana.",'Local', self.fila, self.columna)
         """ if tempCondition.type == typeExpression.BOOL:
             if(tempCondition.getValue() == True):
                 newEnv = Environment(environment)

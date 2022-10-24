@@ -153,7 +153,7 @@ class Environment:
                         archivo.write("Error: La variable "+ id +" no es mutable\n")
                         archivo.close()
                         Environment.saveError("Error: La variable "+ id +" no es mutable", 'Local', fila, columna)
-                        return
+                        return "no_mut"
                 else:
                     tempVar: Symbol = tempEnv.variable.get(id)
                     if(tempVar.getType() == typeExpression.USIZE and value.getType() == typeExpression.INTEGER):
@@ -168,7 +168,7 @@ class Environment:
                     #archivo.write("Error: la variable " + id + " no puede ser cambiada de tipo\n")
                     #archivo.close()
                     Environment.saveError("Error: la variable " + id + " no puede ser cambiada de tipo", 'Local', fila, columna)
-                    return
+                    return "change_type"
             tempEnv = tempEnv.father
         archivo = open("Salida.txt", "a")
         archivo.write("Error: la variable " + id + " no existe\n")

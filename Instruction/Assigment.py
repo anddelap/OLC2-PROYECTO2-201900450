@@ -69,80 +69,82 @@ class Assignment(Instruction):
                     #archivo.close()
                     Environment.saveError("Error: la variable " + id + " no existe", 'Local', self.fila, self.columna)
                 else:
-                    if(asig.getType()==typeExpression.STRING or asig.getType()==typeExpression.PSTRING):
-                        aux = [self.id,str(newValue.getValue())]
-                        asignacion = False
-                        value = newValue
-                        if(newValue.getId() != ""):
-                            value = newValue.getValue()
-                            aux[1] = newValue.getId()
-                        for temp in Environment.getTemporales():
-                            #print(len(temp))
-                            if(len(temp) == 5):
-                                if str(value.getValue()) == str(temp[4]):
-                                    aux[1] = temp[0]
-                                    asignacion = True
-                        pointer=""
-                        for temp in Environment.getTemporales(): 
-                            if(isinstance(temp, list)):
-                                if(len(temp) == 3):
-                                    if(temp[0] == self.id):
-                                        pointer = temp[2]
-                                        break
-                        Environment.saveTemporal(pointer,"","",str(-100000))
-                        Environment.saveTemporal("H","","",str(-100000))
-                        Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-2)+"] = t"+str(Environment.getContador()-1)+";")
-                        Environment.saveExpression("heap[(int)H] = "+str(len(value.getValue()))+";")
-                        for v in value.getValue():
-                            Environment.saveExpression("H = H + 1;")
-                            Environment.saveExpression("heap[(int)H] = "+str(ord(v))+";")
-                        Environment.saveExpression("H = H + 1;")
-                    elif(asig.getType()==typeExpression.INTEGER or asig.getType()==typeExpression.FLOAT):
-                        aux = [self.id,str(newValue.getValue())]
-                        value = newValue
-                        if(newValue.getId() != ""):
-                            value = newValue.getValue()
-                            aux[1] = newValue.getId()
-                        for temp in Environment.getTemporales():
-                            #print(len(temp))
-                            if(len(temp) == 5):
-                                if str(value.getValue()) == temp[4]:
-                                    aux[1] = temp[0]
-                                    asignacion = True
-                        pointer=""
-                        for temp in Environment.getTemporales(): 
-                            if(isinstance(temp, list)):
-                                if(len(temp) == 3):
-                                    if(temp[0] == self.id):
-                                        pointer = temp[2]
-                                        break
-                        Environment.saveTemporal(pointer,"","",str(-100000))
-                        Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+aux[1]+";") 
-                    elif(asig.getType()==typeExpression.BOOL):
-                        aux = [self.id,str(newValue.getValue())]
-                        #value = newValue
-                        #if(newValue.getId() != ""):
-                        #    value = newValue.getValue()
-                        #    aux[1] = newValue.getId()
-                        #for temp in Environment.getTemporales():
-                        #    #print(len(temp))
-                        #    if(len(temp) == 5):
-                        #        if str(value.getValue()) == temp[4]:
-                        #           aux[1] = temp[0]
-                        #           asignacion = True
-                        pointer=""
-                        for temp in Environment.getTemporales(): 
-                            if(isinstance(temp, list)):
-                                if(len(temp) == 3):
-                                    if(temp[0] == self.id):
-                                        pointer = temp[2]
-                                        break
-                        Environment.saveTemporal(pointer,"","",str(-100000))
-                        if(newValue.getValue() == True):
-                            Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 1;")
-                        else:
-                            Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 0;") 
-                    environment.alterVariable(self.id, value, self.fila, self.columna)
+                    alterEnv = environment.alterVariable(self.id, newValue, self.fila, self.columna)
+                    if(alterEnv != "no_mut" and alterEnv != "change_type"):
+                        if(newValue.getType() == asig.getType()):
+                            if(asig.getType()==typeExpression.STRING or asig.getType()==typeExpression.PSTRING):
+                                aux = [self.id,str(newValue.getValue())]
+                                asignacion = False
+                                value = newValue
+                                if(newValue.getId() != ""):
+                                    value = newValue.getValue()
+                                    aux[1] = newValue.getId()
+                                for temp in Environment.getTemporales():
+                                    #print(len(temp))
+                                    if(len(temp) == 5):
+                                        if str(value.getValue()) == str(temp[4]):
+                                            aux[1] = temp[0]
+                                            asignacion = True
+                                pointer=""
+                                for temp in Environment.getTemporales(): 
+                                    if(isinstance(temp, list)):
+                                        if(len(temp) == 3):
+                                            if(temp[0] == self.id):
+                                                pointer = temp[2]
+                                                break
+                                Environment.saveTemporal(pointer,"","",str(-100000))
+                                Environment.saveTemporal("H","","",str(-100000))
+                                Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-2)+"] = t"+str(Environment.getContador()-1)+";")
+                                Environment.saveExpression("heap[(int)H] = "+str(len(value.getValue()))+";")
+                                for v in value.getValue():
+                                    Environment.saveExpression("H = H + 1;")
+                                    Environment.saveExpression("heap[(int)H] = "+str(ord(v))+";")
+                                Environment.saveExpression("H = H + 1;")
+                            elif(asig.getType()==typeExpression.INTEGER or asig.getType()==typeExpression.FLOAT):
+                                aux = [self.id,str(newValue.getValue())]
+                                value = newValue
+                                if(newValue.getId() != ""):
+                                    value = newValue.getValue()
+                                    aux[1] = newValue.getId()
+                                for temp in Environment.getTemporales():
+                                    #print(len(temp))
+                                    if(len(temp) == 5):
+                                        if str(value.getValue()) == temp[4]:
+                                            aux[1] = temp[0]
+                                            asignacion = True
+                                pointer=""
+                                for temp in Environment.getTemporales(): 
+                                    if(isinstance(temp, list)):
+                                        if(len(temp) == 3):
+                                            if(temp[0] == self.id):
+                                                pointer = temp[2]
+                                                break
+                                Environment.saveTemporal(pointer,"","",str(-100000))
+                                Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+aux[1]+";") 
+                            elif(asig.getType()==typeExpression.BOOL):
+                                aux = [self.id,str(newValue.getValue())]
+                                #value = newValue
+                                #if(newValue.getId() != ""):
+                                #    value = newValue.getValue()
+                                #    aux[1] = newValue.getId()
+                                #for temp in Environment.getTemporales():
+                                #    #print(len(temp))
+                                #    if(len(temp) == 5):
+                                #        if str(value.getValue()) == temp[4]:
+                                #           aux[1] = temp[0]
+                                #           asignacion = True
+                                pointer=""
+                                for temp in Environment.getTemporales(): 
+                                    if(isinstance(temp, list)):
+                                        if(len(temp) == 3):
+                                            if(temp[0] == self.id):
+                                                pointer = temp[2]
+                                                break
+                                Environment.saveTemporal(pointer,"","",str(-100000))
+                                if(newValue.getValue() == True):
+                                    Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 1;")
+                                else:
+                                    Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 0;") 
         else: #Asignacion de arreglo por posicion
                 List = environment.getVariable(self.id)
                 todosInt = False
