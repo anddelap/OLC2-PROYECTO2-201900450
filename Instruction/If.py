@@ -22,10 +22,10 @@ class If(Instruction):
         count = copy.deepcopy(Environment.getEtiqueta())
         #Environment.aumentarContadorL()
         #Environment.aumentarContadorL()
-        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
-        Environment.aumentarContadorL()
-        newEnv = Environment(environment)
         if tempCondition.type == typeExpression.BOOL:
+            Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+            Environment.aumentarContadorL()
+            newEnv = Environment(environment)
             for ins in self.block:
                 #ins.execute(newEnv)
                 #Environment.aumentarContadorL()
@@ -33,22 +33,29 @@ class If(Instruction):
                 tipo = str(type(ins))
                 if tipo == "<class 'Expression.transSen.transSen'>":
                     if(ins.type==trasnferSen.BREAK):
-                        
                         """ return "break" """
                     elif(ins.type==trasnferSen.CONTINUE):
                         """ return "continue" """
                     elif(ins.type==trasnferSen.RETURN):
-                        return  ins.value
-                if(tran != None):
+                        """ return  ins.value """
+                        value = ins.value.execute(newEnv)
+                        aux = ""
+                        for temp in Environment.getTemporales():
+                            if(len(temp) == 5):
+                                if str(value.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    asignacion = True
+                        Environment.saveExpression("stack[P] = "+aux+";")
+                """ if(tran != None):
                     if(tran == "break"):
-                        """ return "break" """
+                        return "break"
                     elif(tran == "continue"):
-                        """ return "continue" """  
+                        return "continue"  
                     else:
                         try:
-                            """ return tran.execute(newEnv) """
+                            return tran.execute(newEnv)
                         except:
-                            """ return tran """
+                            return tran """
             if(self.elseBlock!=None):
                 newEnv = Environment(environment)
                 ins = str(type(self.elseBlock))
@@ -61,8 +68,16 @@ class If(Instruction):
                         elif(ins.type==trasnferSen.CONTINUE):
                             return "continue"
                         elif(ins.type==trasnferSen.RETURN):
-                            return  ins.value.execute(newEnv)
-                    elif(tran != None):
+                            """ return  ins.value.execute(newEnv) """
+                            value = ins.value.execute(newEnv)
+                            aux = ""
+                            for temp in Environment.getTemporales():
+                                if(len(temp) == 5):
+                                    if str(value.getValue()) == str(temp[4]):
+                                        aux = temp[0]
+                                        asignacion = True
+                            Environment.saveExpression("stack[P] = "+aux+";")
+                    """ elif(tran != None):
                         if(tran == "break"):
                             return "break"
                         elif(tran == "continue"):
@@ -71,7 +86,7 @@ class If(Instruction):
                             try:
                                 return tran.execute(newEnv)
                             except:
-                                return tran 
+                                return tran  """
                 else:
                     Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")  
                     Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
@@ -82,12 +97,20 @@ class If(Instruction):
                         tipo = str(type(ins))
                         if tipo == "<class 'Expression.transSen.transSen'>":
                             if(ins.type==trasnferSen.BREAK):
-                                return "break"
+                                """ return "break" """
                             elif(ins.type==trasnferSen.CONTINUE):
-                                return "continue"
+                                """ return "continue" """
                             elif(ins.type==trasnferSen.RETURN):
-                                return  ins.value.execute(newEnv)
-                        elif(tran != None):
+                                """ return  ins.value.execute(newEnv) """
+                                value = ins.value.execute(newEnv)
+                                aux = ""
+                                for temp in Environment.getTemporales():
+                                    if(len(temp) == 5):
+                                        if str(value.getValue()) == str(temp[4]):
+                                            aux = temp[0]
+                                            asignacion = True
+                                Environment.saveExpression("stack[P] = "+aux+";")
+                        """ elif(tran != None):
                             if(tran == "break"):
                                 return "break"
                             elif(tran == "continue"):
@@ -96,7 +119,7 @@ class If(Instruction):
                                 try:
                                     return tran.execute(newEnv)
                                 except:
-                                    return tran
+                                    return tran """
                     Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
                     Environment.aumentarContadorL()
                     #Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+2)+";")

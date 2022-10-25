@@ -28,10 +28,10 @@ class Function(Instruction):
             for parameter in self.parameters:
                 parameter.execute(newEnv,array)
             #Environment.saveExpression("void " + self.id + "(){")
-            position=len(Environment.getTemporales())
             #Environment.saveExpression(["void",self.id,Environment.getP(),array])
             #    parameter.execute(environment)
             Environment.saveExpression(["void",self.id,Environment.getP(),array])
+            position=len(Environment.getTemporales())
             print(Environment.getP())
             for ins in self.block:
                 tran = ins.execute(newEnv)
@@ -44,8 +44,11 @@ class Function(Instruction):
                     elif(ins.type==trasnferSen.RETURN):
                         #return  ins.value.execute(newEnv)
                         if(self.typee != None):
-                            if(ins.value.execute(newEnv).getType()==self.typee):
-                                return ins.value.execute(newEnv)
+                            value = ins.value.execute(newEnv)
+                            if(value.getType()==self.typee):
+                                #ins.value.execute(newEnv)
+                                Environment.saveExpression("stack[P] = t"+str(Environment.getContador()-1)+";")
+
                             else:
                                 archivo = open("Salida.txt", "a")
                                 archivo.write("Error: Tipo de valor que se retorna no coinciden con el tipo de la funcion\n")
@@ -81,7 +84,8 @@ class Function(Instruction):
                             #archivo.write("Error: la funcion "+ str(self.id) + " no retorna un valor de tipo "+ str(self.typee)+"\n")
                             #archivo.close()
                             Environment.saveError("Error: La funcion no puede retornar",'Local', self.fila, self.columna)
-                if(tran != None):
+                """ if(tran != None):
+                    print(tran.getValue())
                     if(tran == "break"):
                         return "break"
                     elif(tran == "continue"):
@@ -158,12 +162,12 @@ class Function(Instruction):
                                 #archivo = open("Errores/Errores.txt", "a")
                                 #archivo.write("Error: la funcion "+ str(self.id) + " no retorna un valor de tipo "+ str(self.typee)+"\n")
                                 #archivo.close()
-                                Environment.saveError("Error: La funcion no puede retornar",'Local', self.fila, self.columna)
+                                Environment.saveError("Error: La funcion no puede retornar",'Local', self.fila, self.columna) """
             #Environment.saveExpression("return;")
-            print(Environment.getP())
-            print(Environment.getTemporales()[position])
+            #print(Environment.getP())
+            #print(Environment.getTemporales()[position])
             Environment.getTemporales()[position][2] = Environment.getP()
-            print(Environment.getTemporales()[position])
+            #print(Environment.getTemporales()[position])
             #Environment.getTemporales().insert(position,["void",self.id,Environment.getP(),array])
             Environment.saveExpression("}")
 

@@ -21,12 +21,25 @@ class VariableCall(Expression):
             return Primitive(0,typeExpression.INTEGER).execute(environment)
         else:
             pointer=""
+            encontrado = False
             for temp in Environment.getTemporales(): 
                 if(isinstance(temp, list)):
                     if(len(temp) == 3):
                         if(temp[0] == self.id):
                             pointer = temp[2]
+                            encontrado = True
                             break
+            if(encontrado==False):
+                for temp in Environment.getTemporales():
+                    if(len(temp)==4):
+                        if(temp[0]=="void"):
+                            for t in temp[3]:
+                                print(t)
+                                if(t[0] == self.id):
+                                    pointer = t[2]
+                                
+                
+            #print(self.id)
             Environment.saveTemporal(pointer,"","",str(-100000))
             if(retValue.getType() == typeExpression.INTEGER or retValue.getType() == typeExpression.FLOAT):
                 Environment.saveTemporal("stack[(int)t"+str(Environment.getContador()-1)+"]","","",retValue.getValue())

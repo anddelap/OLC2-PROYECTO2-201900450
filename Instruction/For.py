@@ -24,7 +24,7 @@ class For(Instruction):
                 if(leftValue.getType()==typeExpression.INTEGER and rightValue.getType()==typeExpression.INTEGER):
                     tempSy = Symbol("",0,leftValue.type,0,0)
                     #========== For de intervalo ==========
-                    position = len(Environment.getTemporales())-1
+                    position = len(Environment.getTemporales())
                     newEnv = Environment(environment)
                     aux = [self.id1,str(leftValue.getValue())]
                     asignacion = False
@@ -59,7 +59,7 @@ class For(Instruction):
                         aux2[0] = leftValue.getId()
                     if(rightValue.getId() != ""):
                         right = int(rightValue.getValue().getValue())
-                        aux2[2] = rightValue.getId()
+                        aux2[1] = rightValue.getId()
                     #value = left + right
                     #aux2[3] = str(value)
                     change = False
@@ -71,7 +71,7 @@ class For(Instruction):
                     for temp in Environment.getTemporales():
                         if len(temp) == 5:
                             if int(right) == int(temp[4]):
-                                aux2[2] = temp[0]
+                                aux2[1] = temp[0]
                                 change = True
 
                     Environment.saveTemporal(pointer,"","",Environment.getP())
@@ -84,10 +84,26 @@ class For(Instruction):
                     for ins in self.block:
                             #ins.execute(newEnv)
                             tran = ins.execute(newEnv)
-                    
+                            tipo = str(type(ins))
+                            if tipo == "<class 'Expression.transSen.transSen'>":
+                                if(ins.type==trasnferSen.BREAK):
+                                    """ return "break" """
+                                elif(ins.type==trasnferSen.CONTINUE):
+                                    """ return "continue" """
+                                elif(ins.type==trasnferSen.RETURN):
+                                    """ return  ins.value.execute(newEnv) """
+                                    value = ins.value.execute(newEnv)
+                                    aux = ""
+                                    for temp in Environment.getTemporales():
+                                        if(len(temp) == 5):
+                                            if str(value.getValue()) == str(temp[4]):
+                                                aux = temp[0]
+                                                asignacion = True
+                                    Environment.saveExpression("stack[P] = "+aux+";")
+
                     Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
-                    Environment.aumentarContadorL()
                     position2 = len(Environment.getTemporales())
+                    Environment.aumentarContadorL()
                     
                     Environment.getTemporales().insert(position,"L"+str(Environment.getEtiqueta())+":")
                     Environment.getTemporales().insert(position2,"goto L"+str(Environment.getEtiqueta())+";")

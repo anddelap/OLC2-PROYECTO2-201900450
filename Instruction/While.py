@@ -30,14 +30,22 @@ class While(Instruction):
                 tipo = str(type(ins))
                 if tipo == "<class 'Expression.transSen.transSen'>":
                     if(ins.type==trasnferSen.BREAK):
-                            positionBreak =  len(Environment.getTemporales())-1
+                            positionBreak =  len(Environment.getTemporales())
                             transfer = "break"
                     elif(ins.type==trasnferSen.CONTINUE):
-                            positionContinue =  len(Environment.getTemporales())-1
+                            positionContinue =  len(Environment.getTemporales())
                             transfer = "continue"
                     elif(ins.type==trasnferSen.RETURN):
-                            return  ins.value.execute(newEnv)
-                if(tran != None):
+                            """  return  ins.value.execute(newEnv) """
+                            value = ins.value.execute(newEnv)
+                            aux = ""
+                            for temp in Environment.getTemporales():
+                                if(len(temp) == 5):
+                                    if str(value.getValue()) == str(temp[4]):
+                                        aux = temp[0]
+                                        asignacion = True
+                            Environment.saveExpression("stack[P] = "+aux+";")
+                """ if(tran != None):
                     if(tran == "break"):
                         transfer =  "break"
                     elif(tran == "continue"):
@@ -46,15 +54,19 @@ class While(Instruction):
                         try:
                             return tran.execute(newEnv)
                         except:
-                            return tran 
-            Environment.saveExpression("L"+str(Environment.getEtiqueta())+":") 
-            Environment.aumentarContadorL()
+                            return tran  """
+            Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
             position2 = len(Environment.getTemporales())
-
+            if(positionBreak != 0):
+                Environment.getTemporales().insert(positionBreak,"goto L"+str(Environment.getEtiqueta())+";")
+            Environment.aumentarContadorL()
+            """ position2 = len(Environment.getTemporales()) """
             Environment.getTemporales().insert(position,"L"+str(Environment.getEtiqueta())+":")
             Environment.getTemporales().insert(position2,"goto L"+str(Environment.getEtiqueta())+";")
 
-            if(transfer == "continue"):
+            if(positionContinue != 0):
+                """ print(Environment.getTemporales()[positionContinue])
+                print(Environment.getTemporales()) """
                 Environment.getTemporales().insert(positionContinue,"goto L"+str(Environment.getEtiqueta())+";")
 
             #print(Environment.getEtiqueta())
@@ -89,9 +101,9 @@ class While(Instruction):
         else:
             ruta = "Salida.txt"
             archivo = open(ruta, "a")
-            archivo.write("Error: Condicion no valida.  \n")
+            archivo.write("Error: La condicion del while debe de ser booleana. \n")
             archivo.close()
             #archivo = open("Errores/Errores.txt", "a")
             #archivo.write("Error: Condicion no valida.  \n")
             #archivo.close()
-            Environment.saveError("Error: Condicion no valida", 'Local', self.fila, self.columna)
+            Environment.saveError("Error: La condicion del while debe de ser booleana.", 'Local', self.fila, self.columna)
