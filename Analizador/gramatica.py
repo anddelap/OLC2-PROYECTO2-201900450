@@ -499,7 +499,7 @@ def p_declaration(t):
         t[0] = Declaration(t[3], t[6], t[11], t.lineno(1),t.lexpos(1), True, True, t[8],False,False) #5
     elif(len(t)==12):
         if(t[5]=='Vec'):
-            t[0] = Declaration(t[3], t[7], t[10], t.lineno(1),t.lexpos(1), True, True, None,True),False #7
+            t[0] = Declaration(t[3], t[7], t[10], t.lineno(1),t.lexpos(1), True, True, None,True,False) #7
         else:
             t[0] = Declaration(t[2], t[5], t[10], t.lineno(1),t.lexpos(1), True, False, t[7],False,False) #6
     elif(len(t)==11):

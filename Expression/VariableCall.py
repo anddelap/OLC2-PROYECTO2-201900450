@@ -34,7 +34,6 @@ class VariableCall(Expression):
                     if(len(temp)==4):
                         if(temp[0]=="void"):
                             for t in temp[3]:
-                                print(t)
                                 if(t[0] == self.id):
                                     pointer = t[2]
                                 
@@ -48,5 +47,9 @@ class VariableCall(Expression):
                     Environment.saveTemporal("stack[(int)t"+str(Environment.getContador()-1)+"]","","",1)
                 else:
                     Environment.saveTemporal("stack[(int)t"+str(Environment.getContador()-1)+"]","","",0)
+            elif(retValue.getType() == typeExpression.STRING or retValue.getType() == typeExpression.PSTRING) :
+                Environment.saveTemporal("stack[(int)t"+str(Environment.getContador()-1)+"]","","",len(retValue.getValue()))
+            elif(retValue.getType() == typeExpression.ARRAY or retValue.getType() == typeExpression.VECTOR):
+                Environment.saveTemporal("stack[(int)t"+str(Environment.getContador()-1)+"]","","",len(retValue.getValue()))
             #Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+aux[1]+";")    
             return retValue

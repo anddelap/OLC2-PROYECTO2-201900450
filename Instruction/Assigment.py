@@ -98,8 +98,10 @@ class Assignment(Instruction):
                                 Environment.saveExpression("heap[(int)H] = "+str(len(value.getValue()))+";")
                                 for v in value.getValue():
                                     Environment.saveExpression("H = H + 1;")
+                                    Environment.aumentarH()
                                     Environment.saveExpression("heap[(int)H] = "+str(ord(v))+";")
                                 Environment.saveExpression("H = H + 1;")
+                                Environment.aumentarH()
                             elif(asig.getType()==typeExpression.INTEGER or asig.getType()==typeExpression.FLOAT):
                                 aux = [self.id,str(newValue.getValue())]
                                 value = newValue
@@ -157,6 +159,31 @@ class Assignment(Instruction):
                             break 
                     if(len(self.indexArray) == 1):
                         tempIndex = self.indexArray[0].execute(environment)
+                        aux=str(tempIndex.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         if(todosInt):
                             try:
                                 List.getValue()[tempIndex.getValue()] = newValue
@@ -177,7 +204,57 @@ class Assignment(Instruction):
                             Environment.saveError("Error: El indice debe ser un integer", 'Local', self.fila, self.columna)
                     elif(len(self.indexArray) == 2):
                         tempIndex = self.indexArray[0].execute(environment)
+                        aux=str(tempIndex.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+3)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         tempIndex2 = self.indexArray[1].execute(environment)
+                        aux=str(tempIndex2.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex2.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue()[tempIndex.getValue()].getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         if(todosInt):
                             UsedList = List.getValue()[tempIndex.getValue()]
                             if(UsedList.getType() == typeExpression.ARRAY or UsedList.getType() == typeExpression.VECTOR):
@@ -200,8 +277,83 @@ class Assignment(Instruction):
                                 Environment.saveError("Error: Solo se puede ingresar a un array o vector", 'Local', self.fila, self.columna)
                     elif(len(self.indexArray) == 3):
                         tempIndex = self.indexArray[0].execute(environment)
+                        aux=str(tempIndex.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+5)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         tempIndex2 = self.indexArray[1].execute(environment)
+                        aux=str(tempIndex2.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex2.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue()[tempIndex.getValue()].getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+3)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         tempIndex3 = self.indexArray[2].execute(environment)
+                        aux=str(tempIndex3.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex3.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue()[tempIndex.getValue()].getValue()[tempIndex2.getValue()].getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         if(todosInt):
                             UsedList = List.getValue()[tempIndex.getValue()].getValue()[tempIndex2.getValue()]
                             if(UsedList.getType() == typeExpression.ARRAY or UsedList.getType() == typeExpression.VECTOR):
@@ -229,9 +381,109 @@ class Assignment(Instruction):
                             Environment.saveError("Error: Los indices deben ser integer", 'Local', self.fila, self.columna)
                     elif(len(self.indexArray) == 4):
                         tempIndex = self.indexArray[0].execute(environment)
+                        aux=str(tempIndex.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+7)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         tempIndex2 = self.indexArray[1].execute(environment)
+                        aux=str(tempIndex2.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex2.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue()[tempIndex.getValue()].getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+5)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         tempIndex3 = self.indexArray[2].execute(environment)
+                        aux=str(tempIndex3.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex3.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue()[tempIndex.getValue()].getValue()[tempIndex2.getValue()].getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+3)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         tempIndex4 = self.indexArray[3].execute(environment)
+                        aux=str(tempIndex4.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex4.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue()[tempIndex.getValue()].getValue()[tempIndex2.getValue()].getValue()[tempIndex3.getValue()].getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         if(todosInt):
                             UsedList = List.getValue()[tempIndex.getValue()].getValue()[tempIndex2.getValue()].getValue()[tempIndex3.getValue()]
                             if(UsedList.getType() == typeExpression.ARRAY or UsedList.getType() == typeExpression.VECTOR):
@@ -258,11 +510,136 @@ class Assignment(Instruction):
                             archivo.close()
                             Environment.saveError("Error: Los indices deben ser integer", 'Local', self.fila, self.columna)
                     elif(len(self.indexArray) == 5):
-                        tempIndex = self.indexArray[0].execute(environment)
+                        empIndex = self.indexArray[0].execute(environment)
+                        aux=str(tempIndex.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+9)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         tempIndex2 = self.indexArray[1].execute(environment)
+                        aux=str(tempIndex2.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex2.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue()[tempIndex.getValue()].getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+7)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         tempIndex3 = self.indexArray[2].execute(environment)
+                        aux=str(tempIndex3.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex3.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue()[tempIndex.getValue()].getValue()[tempIndex2.getValue()].getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+5)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         tempIndex4 = self.indexArray[3].execute(environment)
+                        aux=str(tempIndex4.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex4.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue()[tempIndex.getValue()].getValue()[tempIndex2.getValue()].getValue()[tempIndex3.getValue()].getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+3)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         tempIndex5 = self.indexArray[4].execute(environment)
+                        aux=str(tempIndex5.getValue())
+                        for temp in Environment.getTemporales():
+                            if len(temp) == 5:
+                                if str(tempIndex5.getValue()) == str(temp[4]):
+                                    aux = temp[0]
+                                    change = True
+                        Environment.saveExpression("if("+aux+" < 0) goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("if("+aux+" > "+str(len(List.getValue()[tempIndex.getValue()].getValue()[tempIndex2.getValue()].getValue()[tempIndex3.getValue()].getValue()[tempIndex4.getValue()].getValue())-1)+") goto L"+str(Environment.getEtiqueta())+";")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
+                        Environment.saveExpression("printf(\"%c\", 66);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 117);")
+                        Environment.saveExpression("printf(\"%c\", 110);")
+                        Environment.saveExpression("printf(\"%c\", 100);")
+                        Environment.saveExpression("printf(\"%c\", 115);")
+                        Environment.saveExpression("printf(\"%c\", 69);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("printf(\"%c\", 111);")
+                        Environment.saveExpression("printf(\"%c\", 114);")
+                        Environment.saveExpression("goto L"+str(Environment.getEtiqueta()+1)+";")
+                        Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                        Environment.aumentarContadorL()
                         if(todosInt):
                             UsedList = List.getValue()[tempIndex.getValue()].getValue()[tempIndex2.getValue()].getValue()[tempIndex3.getValue()].getValue()[tempIndex4.getValue()]
                             if(UsedList.getType() == typeExpression.ARRAY or UsedList.getType() == typeExpression.VECTOR):

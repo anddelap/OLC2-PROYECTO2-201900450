@@ -26,34 +26,12 @@ class Println(Instruction):
                 for expression in range(1,len(self.expression)):
                     tempExp = self.expression[expression].execute(environment)
                     find = False
-                    aux = ""
+                    aux = str(tempExp.getValue())
                     for temp in Environment.getTemporales():
                         if len(temp) == 5:
                             if (str(tempExp.getValue()) == str(temp[4])):
-                                aux=temp[0]
+                                aux=str(temp[0])
                                 find = True
-                                """ if(tempExp.getType()==typeExpression.INTEGER):
-                                    Environment.saveExpression("printf(\"%d\",(int)"+temp[0]+");")
-                                    find = True
-                                elif(tempExp.getType()==typeExpression.FLOAT):
-                                    Environment.saveExpression("printf(\"%f\","+temp[0]+");")
-                                    find = True
-                                elif(tempExp.getType()==typeExpression.CHAR):
-                                    Environment.saveExpression("printf(\"%c\","+temp[0]+");")
-                                    find = True
-                                elif(tempExp.getType()==typeExpression.BOOL):
-                                    if(tempExp.getValue() == True):
-                                        Environment.saveExpression("printf(\"%d\",(int)"+temp[0]+");")
-                                        find = True
-                                    else:
-                                        Environment.saveExpression("printf(\"%d\",(int)"+temp[0]+");")
-                                        find = True
-                                elif(tempExp.getType() == typeExpression.PSTRING or tempExp.getType() == typeExpression.STRING):
-                                    for e in tempExp.getValue():
-                                        Environment.saveExpression("printf(\"%c\","+str(ord(e))+");")
-                                    #archivo = open("Salida.txt", "a")
-                                    #archivo.write(str(tempExp.getValue())+"\n")
-                                    #archivo.close()  """  
                     if(find == False):
                         if(tempExp.getType()==typeExpression.INTEGER):
                             Environment.saveExpression("printf(\"%d\",(int)"+str(tempExp.getValue())+");")
@@ -113,8 +91,9 @@ class Println(Instruction):
                                     break
                             elif formato.getValue()[j] == "{" and formato.getValue()[j+1] == ":" and formato.getValue()[j+2] == "?" and formato.getValue()[j+3] == "}":
                                 if tempExp.isArray():
-                                    valor = self.printarray(tempExp)
-                                    salida.append(str(valor))
+                                    #valor = self.printarray(tempExp)
+                                    self.printarray2(tempExp)
+                                    #salida.append(str(valor))
                                     i += 4
                                     break
                                 else:
@@ -195,6 +174,26 @@ class Println(Instruction):
                     else:
                         valor+=str(expression.getValue()[i].value)+"]"
         return valor
+    
+    def printarray2(self, expression:Symbol):
+        for i in range(0,len(expression.getValue())):
+            if expression.getValue()[i].isArray():
+                self.printarray2(expression.getValue()[i])
+            else:
+                if(expression.getValue()[i].getType()==typeExpression.INTEGER):
+                    Environment.saveExpression("printf(\"%d\",(int)"+str(expression.getValue()[i].getValue())+");")
+                elif(expression.getValue()[i].getType()==typeExpression.FLOAT):
+                    Environment.saveExpression("printf(\"%f\","+str(expression.getValue()[i].getValue())+");")
+                elif(expression.getValue()[i].getType()==typeExpression.CHAR):
+                    Environment.saveExpression("printf(\"%c\","+str(ord(expression.getValue()[i].getValue()))+");")
+                elif(expression.getValue()[i].getType()==typeExpression.BOOL):
+                    if(expression.getValue()[i].getValue() == True):
+                        Environment.saveExpression("printf(\"%d\",(int)"+str(0)+");")
+                    else:
+                        Environment.saveExpression("printf(\"%d\",(int)"+str(1)+");")
+                elif(expression.getValue()[i].getType() == typeExpression.PSTRING or expression.getValue()[i].getType() == typeExpression.STRING):
+                    for e in expression.getValue()[i].getValue():
+                        Environment.saveExpression("printf(\"%c\","+str(ord(e))+");")
     
     def getCantLLaves(self, expression):
         cant = 0

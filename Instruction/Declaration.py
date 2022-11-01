@@ -30,8 +30,8 @@ class Declaration(Instruction):
                     if (self.type.value != tempValue.getType().value):
                         if(self.type == typeExpression.USIZE and tempValue.getType() == typeExpression.INTEGER):
                             tempValue.type = typeExpression.USIZE
-                            environment.saveVariable(self.id, tempValue, self.type, self.fila, self.columna, self.isArray,self.mutable,False)
-                            return
+                            #environment.saveVariable(self.id, tempValue, self.type, self.fila, self.columna, self.isArray,self.mutable,False)
+                            #return
                         else:
                             ruta = "Salida.txt"
                             archivo = open(ruta, "a")
@@ -42,6 +42,7 @@ class Declaration(Instruction):
                             #archivo.close()
                             Environment.saveError("Error: Los tipos no coinciden en la declaracion",'Local', self.fila, self.columna)
                             environment.saveVariable('None',Primitive(0,typeExpression.INTEGER).execute(environment),typeExpression.INTEGER, self.fila, self.columna,self.isArray,self.mutable,False)
+                            Environment.aumentarP()
                             return
                     aux = [self.id,str(tempValue.getValue())]
                     asignacion = False
@@ -63,7 +64,7 @@ class Declaration(Instruction):
                     #        Environment.saveDeclaration(self.id,str(tempValue.getValue()))
                     #    elif tempValue.getId() != "":
                     #        Environment.saveDeclaration(self.id,tempValue.getId())
-                    if(tempValue.getType() == typeExpression.INTEGER or tempValue.getType() == typeExpression.FLOAT):
+                    if(tempValue.getType() == typeExpression.INTEGER or tempValue.getType() == typeExpression.FLOAT or tempValue.getType() == typeExpression.USIZE):
                         Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(-100000))
                         Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = "+aux[1]+";")
                         Environment.saveDeclaration(self.id,aux[1],"P + "+str(Environment.getP()))
@@ -74,8 +75,10 @@ class Declaration(Instruction):
                         Environment.saveExpression("heap[(int)H] = "+str(len(value.getValue()))+";")
                         for v in value.getValue():
                             Environment.saveExpression("H = H + 1;")
+                            Environment.aumentarH()
                             Environment.saveExpression("heap[(int)H] = "+str(ord(v))+";")
                         Environment.saveExpression("H = H + 1;")
+                        Environment.aumentarH()
                         Environment.saveDeclaration(self.id,aux[1],"P + "+str(Environment.getP()))
                     elif(tempValue.getType() == typeExpression.BOOL):
                         Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(-100000))
@@ -85,6 +88,15 @@ class Declaration(Instruction):
                         else:
                             Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 0;")
                             Environment.saveDeclaration(self.id,"0","P + "+str(Environment.getP()))
+                    elif(tempValue.getType() == typeExpression.VECTOR):
+                        #print("VECTOR")
+                        pointers =self.arrayToC3D(tempValue)
+                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(-100000))
+                        Environment.saveTemporal("H","","",0)
+                        Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-2)+"] = t"+str(Environment.getContador()-1)+";")
+                        #Environment.saveExpression("heap[(int)H] = "+str(len(tempArray.getValue()))+";")
+                        self.arraytoHeap(pointers)
+                        Environment.saveDeclaration(self.id,aux[1],"P + "+str(Environment.getP()))
                     environment.saveVariable(self.id, tempValue, self.type, self.fila, self.columna, self.isArray,self.mutable, False)
                     Environment.aumentarP()
                 else:
@@ -119,10 +131,17 @@ class Declaration(Instruction):
                         Environment.saveExpression("heap[(int)H] = "+str(len(value.getValue()))+";")
                         for v in value.getValue():
                             Environment.saveExpression("H = H + 1;")
+                            Environment.aumentarH()
                             Environment.saveExpression("heap[(int)H] = "+str(ord(v))+";")
                         Environment.saveExpression("H = H + 1;")
+                        Environment.aumentarH()
                         Environment.saveDeclaration(self.id,aux[1],"P + "+str(Environment.getP()))
                     elif(tempValue.getType() == typeExpression.BOOL):
+                        tipo=str(type(self.value))
+                        print(tipo)
+                        if(tipo == "<class 'Expression.Relational.Relational'>" or tipo == "<class 'Expression.Logic.Logic'>"):
+                            Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                            Environment.aumentarContadorL()
                         Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(-100000))
                         if(aux[1] == "True"):
                             Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 1;")
@@ -130,6 +149,9 @@ class Declaration(Instruction):
                         else:
                             Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-1)+"] = 0;")
                             Environment.saveDeclaration(self.id,"0","P + "+str(Environment.getP()))
+                        if(tipo == "<class 'Expression.Relational.Relational'>" or tipo == "<class 'Expression.Logic.Logic'>"):
+                            Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                            Environment.aumentarContadorL()
                     environment.saveVariable(self.id, value, tempValue.getType(), self.fila, self.columna, self.isArray,self.mutable, False)
                     Environment.aumentarP()
             else:
@@ -137,6 +159,7 @@ class Declaration(Instruction):
                     correct = True
                     tempArray = self.value.execute(environment)
                     size = self.sizeArray.execute(environment)
+                    aux = [self.id,str(tempArray.getValue())]
                     if( size.getValue() == len(tempValue.getValue())):
                         for tempValue in tempArray.getValue():
                             #value = tempValue.execute(environment)
@@ -144,7 +167,15 @@ class Declaration(Instruction):
                                 correct = False
                                 break
                         if(correct == True):
+                            pointers =self.arrayToC3D(tempArray)
+                            Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(-100000))
+                            Environment.saveTemporal("H","","",0)
+                            Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-2)+"] = t"+str(Environment.getContador()-1)+";")
+                            #Environment.saveExpression("heap[(int)H] = "+str(len(tempArray.getValue()))+";")
+                            self.arraytoHeap(pointers)
+                            Environment.saveDeclaration(self.id,aux[1],"P + "+str(Environment.getP()))
                             environment.saveVariable(self.id, tempArray, typeExpression.ARRAY, self.fila, self.columna, self.isArray,self.mutable, False)
+                            Environment.aumentarP()
                         else:
                             ruta = "Salida.txt"
                             archivo = open(ruta, "a")
@@ -169,7 +200,15 @@ class Declaration(Instruction):
                 else:
                     tempVector = self.value.execute(environment)
                     if(len(tempVector.getValue())==0):
+                        pointers =self.arrayToC3D(tempVector)
+                        Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(-100000))
+                        Environment.saveTemporal("H","","",0)
+                        Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-2)+"] = t"+str(Environment.getContador()-1)+";")
+                        #Environment.saveExpression("heap[(int)H] = "+str(len(tempArray.getValue()))+";")
+                        self.arraytoHeap(pointers)
+                        Environment.saveDeclaration(self.id,aux[1],"P + "+str(Environment.getP()))
                         environment.saveVariable(self.id, tempVector, typeExpression.VECTOR, self.fila, self.columna, self.isArray,self.mutable, False)
+                        Environment.aumentarP()
                     else:
                         correct = True
                         for tempValue in tempVector.getValue():
@@ -178,7 +217,14 @@ class Declaration(Instruction):
                                 correct = False
                                 break
                         if(correct == True):
+                            pointers =self.arrayToC3D(tempVector)
+                            Environment.saveTemporal("P + "+str(Environment.getP()),"","",str(-100000))
+                            Environment.saveTemporal("H","","",0)
+                            Environment.saveExpression("stack[(int)t"+str(Environment.getContador()-2)+"] = t"+str(Environment.getContador()-1)+";")
+                            #Environment.saveExpression("heap[(int)H] = "+str(len(tempArray.getValue()))+";")
+                            self.arraytoHeap(pointers)
                             environment.saveVariable(self.id, tempVector, typeExpression.VECTOR, self.fila, self.columna, self.isArray,self.mutable, False)
+                            Environment.aumentarP()
                         else:
                             ruta = "Salida.txt"
                             archivo = open(ruta, "a")
@@ -228,6 +274,7 @@ class Declaration(Instruction):
                         #print(var[1])
                         #print(tempStruct.atributos)
                         environment.saveVariable(self.id, Symbol("",var,typeExpression.STRUCT,0,0), [typeExpression.STRUCT, tempStruct.id], self.fila, self.columna, self.isArray,self.mutable, False)
+                        Environment.aumentarP()
                 else:
                     ruta = "Salida.txt"
                     archivo = open(ruta, "a")
@@ -237,6 +284,63 @@ class Declaration(Instruction):
                     #archivo.write("Error: Los tipos no coinciden en la declaracion\n")
                     #archivo.close()
                     Environment.saveError("Error: El struct no tiene el numero de atributos requeridos",'Local', self.fila, self.columna)
+    
+    def printarray(self, expression:Symbol):
+            valor = "["
+            if(len(expression.getValue())==0):
+                valor+="]"
+            else:
+                for i in range(0,len(expression.getValue())):
+                    if i < len(expression.getValue())-1:
+                        if expression.getValue()[i].isArray():
+                            valor += self.printarray(expression.getValue()[i])+","
+                        else:
+                            valor+=str(expression.getValue()[i].value)+","
+                    if  i == len(expression.getValue())-1:
+                        if expression.getValue()[i].isArray():
+                            a = self.printarray(expression.getValue()[i])
+                            valor +=  a+"]"
+                        else:
+                            valor+=str(expression.getValue()[i].value)+"]"
+            return valor
+
+    def arrayToC3D(self, expression:Symbol):
+        valor = []
+        valor.append(len(expression.getValue()))
+        #Environment.aumentarH()
+        for i in range(0,len(expression.getValue())):
+            if expression.getValue()[i].isArray():
+                    #print(i)
+                    if(i==0):
+                        valor.append(Environment.getH()+(len(expression.getValue())+1))
+                        for j in range(0,len(expression.getValue())):
+                            Environment.aumentarH()
+                        Environment.aumentarH()
+                    else:
+                        for j in range(0,len(expression.getValue()[i].getValue())):
+                            Environment.aumentarH()
+                        Environment.aumentarH()
+                        valor.append(Environment.getH())
+            else:
+                valor.append(expression.getValue()[i].value)
+        for i in range(0,len(expression.getValue())):
+            if expression.getValue()[i].isArray():
+                    valor.append(self.arrayToC3D(expression.getValue()[i]))
+        return valor
+    
+    def arraytoHeap(self, expression):
+        contador = 0
+        for exp in expression:
+            if isinstance(exp, list):
+                self.arraytoHeap(exp)
+            else:
+                Environment.saveExpression("heap[(int)H] = "+str(exp)+";")
+                Environment.saveExpression("H = H + 1;")
+                Environment.aumentarH()
+
+            contador +=1
+                
+        
 
 
 

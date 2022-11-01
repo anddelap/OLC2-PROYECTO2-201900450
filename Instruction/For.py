@@ -64,15 +64,18 @@ class For(Instruction):
                     #aux2[3] = str(value)
                     change = False
                     for temp in Environment.getTemporales():
-                        if len(temp) == 5:
-                            if int(left) == int(temp[4]):
-                                aux2[0] = temp[0]
-                                change = True
+                        if(isinstance(temp, list)):
+                            if len(temp) == 5:
+                                #print(temp)
+                                if int(left) == int(temp[4]):
+                                    aux2[0] = temp[0]
+                                    change = True
                     for temp in Environment.getTemporales():
-                        if len(temp) == 5:
-                            if int(right) == int(temp[4]):
-                                aux2[1] = temp[0]
-                                change = True
+                        if(isinstance(temp, list)):
+                            if len(temp) == 5:
+                                if int(right) == int(temp[4]):
+                                    aux2[1] = temp[0]
+                                    change = True
 
                     Environment.saveTemporal(pointer,"","",Environment.getP())
                     Environment.saveTemporal("stack[(int)t"+str(Environment.getContador()-1)+"]","","",leftValue.getValue())
@@ -161,7 +164,7 @@ class For(Instruction):
                         for ins in self.block:
                             tran = ins.execute(newEnv)
                             tipo = str(type(ins))
-                            if tipo == "<class 'Instruction.transSen.transSen'>":
+                            """ if tipo == "<class 'Instruction.transSen.transSen'>":
                                 if(ins.type==trasnferSen.BREAK):
                                         transfer = "break"
                                 elif(ins.type==trasnferSen.CONTINUE):
@@ -177,11 +180,11 @@ class For(Instruction):
                                     try:
                                         return tran.execute(newEnv)
                                     except:
-                                        return tran                     
-                        if(transfer == "break"):
+                                        return tran """                     
+                        """  if(transfer == "break"):
                             break
                         elif(transfer == "continue"):
-                            continue      
+                            continue  """     
                 else:
                     ruta = "Salida.txt"
                     archivo = open(ruta, "a")

@@ -86,6 +86,21 @@ class Casteo(Expression):
                 #archivo.write("Error: No se puede castear a entero\n")
                 #archivo.close()
                 Environment.saveError("Error: No se puede castear a char",'Local', self.fila, self.columna)
+        elif(self.typeExp == typeExpression.USIZE):
+            if(Value.getType() == typeExpression.INTEGER):
+                return Symbol(
+                        "",
+                        int(Value.getValue()),
+                        typeExpression.USIZE,0,0
+                    )
+            else:
+                ruta = "Salida.txt"
+                archivo = open(ruta, "a")
+                archivo.write("Error: No se puede castear a usize\n")
+                archivo.close()
+                #archivo = open("Errores/Errores.txt", "a")
+                #archivo.write("Error: No se puede castear a entero
+                Environment.saveError("Error: No se puede castear a usize",'Local', self.fila, self.columna)
         else: 
             ruta = "Salida.txt"
             archivo = open(ruta, "a")

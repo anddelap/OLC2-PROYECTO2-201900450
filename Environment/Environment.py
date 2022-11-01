@@ -72,6 +72,18 @@ class Environment:
     def getP():
         global P
         return P
+
+    def getH():
+        global H
+        return H
+
+    def aumentarH():
+        global H
+        H += 1
+    
+    def multH(value):
+        global H
+        H = H * value
     #========================== PARA VARIABLES =====================
     def saveVariable(self, id:str, value, type: typeExpression, fila: int, columna: int, isArray: bool, mutable: bool, temporal: bool):
         if(self.variable.get(id) != None):

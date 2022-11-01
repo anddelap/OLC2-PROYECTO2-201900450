@@ -111,6 +111,7 @@ class NativeFunction(Expression):
                     Environment.saveError("Error: No es posible realizar la operacion chars con "+ str(Value.getValue()), 'Local', self.fila, self.columna)
             elif(self.operation == nativeFunction.LEN):
                 if(Value.getType()==typeExpression.ARRAY or Value.getType()==typeExpression.VECTOR):
+                    Environment.saveTemporal(str(len(Value.getValue())),'','',str(len(Value.getValue())))
                     return Symbol(
                         "",
                         len(Value.getValue()),

@@ -31,23 +31,41 @@ class Function(Instruction):
             #Environment.saveExpression(["void",self.id,Environment.getP(),array])
             #    parameter.execute(environment)
             Environment.saveExpression(["void",self.id,Environment.getP(),array])
-            position=len(Environment.getTemporales())
-            print(Environment.getP())
+
+            position=len(Environment.getTemporales())-1
             for ins in self.block:
                 tran = ins.execute(newEnv)
                 tipo = str(type(ins))
                 if tipo == "<class 'Expression.transSen.transSen'>":
                     if(ins.type==trasnferSen.BREAK):
-                            return "break"
+                           """  return "break" """
                     elif(ins.type==trasnferSen.CONTINUE):
-                            return "continue"
+                            """ return "continue" """
                     elif(ins.type==trasnferSen.RETURN):
                         #return  ins.value.execute(newEnv)
                         if(self.typee != None):
+
                             value = ins.value.execute(newEnv)
+                            tipo = str(type(ins.value))
                             if(value.getType()==self.typee):
-                                #ins.value.execute(newEnv)
-                                Environment.saveExpression("stack[P] = t"+str(Environment.getContador()-1)+";")
+                                aux = str(value.getValue())
+                                if(value.getType()==typeExpression.BOOL):
+                                    if(value.getValue()):
+                                        aux = "1"
+                                    else:
+                                        aux = "0"
+                                for temp in Environment.getTemporales():
+                                    if(len(temp) == 5):
+                                        if str(value.getValue()) == str(temp[4]):
+                                            aux = temp[0]
+                                            asignacion = True
+                                if(tipo == "<class 'Expression.Relational.Relational'>" or tipo == "<class 'Expression.Logic.Logic'>"):
+                                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                                    Environment.aumentarContadorL()
+                                Environment.saveExpression("stack[P] = "+aux+";")
+                                if(tipo == "<class 'Expression.Relational.Relational'>" or tipo == "<class 'Expression.Logic.Logic'>"):
+                                    Environment.saveExpression("L"+str(Environment.getEtiqueta())+":")
+                                    Environment.aumentarContadorL()
 
                             else:
                                 archivo = open("Salida.txt", "a")

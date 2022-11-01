@@ -19,6 +19,7 @@ def compilar():
             env.contador=0
             env.contadorL=1
             env.temporales=[]
+            env.H = 0
             codigo = request.form["entrada"]
             g.codigo=codigo
             archivo = open("Salida.txt", "w")
@@ -56,7 +57,7 @@ def compilar():
                         elif(temp[1]=="" and temp[2]=="" and temp[3]==""):
                             continue
                         else:
-                            data.append(temp[0]+" = "+temp[1]+" "+temp[2]+" "+temp[3]+";\n")
+                            data.append(str(temp[0])+" = "+str(temp[1])+" "+str(temp[2])+" "+str(temp[3])+";\n")
                     elif(len(temp)==2):
                         data.append(temp[0]+" = "+temp[1]+";\n")
                     elif(len(temp)==4):

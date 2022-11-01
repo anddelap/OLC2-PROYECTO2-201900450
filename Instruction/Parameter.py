@@ -41,7 +41,12 @@ class Parameter(Instruction):
         elif(self.tipo==typeExpression.USIZE):
             value =Symbol('',0,self.tipo,0,0)
             environment.saveVariable(self.id,value,self.tipo,self.fila,self.columna, False, True, True)
-
+        elif(self.tipo==typeExpression.ARRAY):
+            value =Symbol('',[],self.tipo,0,0)
+            environment.saveVariable(self.id,value,self.tipo,self.fila,self.columna, False, True, True)
+        elif(self.tipo==typeExpression.VECTOR):
+            value =Symbol('',[],self.tipo,0,0)
+            environment.saveVariable(self.id,value,self.tipo,self.fila,self.columna, False, True, True)
         array.append([self.id,None,"P + "+str(Environment.getP())])
         #Environment.saveDeclaration(self.id,0,"P + "+str(Environment.getP()))
         Environment.aumentarP()
